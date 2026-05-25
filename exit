@@ -1,0 +1,26 @@
+[90m= [39m[34;4mIlluminate\Database\Eloquent\Collection[39;24m {#8098
+    [34mall[39m: [
+      [34;4mApp\Models\User[39;24m {#8100
+        [34mid[39m: [35m1[39m,
+        [34msucursal_id[39m: [35m1[39m,
+        [34mname[39m: [32m"[39m[32mAdministrador HardStore[39m[32m"[39m,
+        [34memail[39m: [32m"[39m[32madmin@hardstore.com[39m[32m"[39m,
+        #[33mpassword[39m: [32m"[39m\$[32m2y[39m\$[32m12[39m\$[32mwMIVP4nvX/H6wR91NSwcf.AlNj0eV3Rdr8Hq5L7nbicFBhNT9LUXO[39m[32m"[39m,
+        [34mrol[39m: [32m"[39m[32madmin[39m[32m"[39m,
+        #[33mremember_token[39m: [36mnull[39m,
+        [34mcreated_at[39m: [32m"[39m[32m2026-05-08 04:15:22[39m[32m"[39m,
+        [34mupdated_at[39m: [32m"[39m[32m2026-05-08 04:15:22[39m[32m"[39m,
+      },
+      [34;4mApp\Models\User[39;24m {#8099
+        [34mid[39m: [35m2[39m,
+        [34msucursal_id[39m: [35m1[39m,
+        [34mname[39m: [32m"[39m[32mVendedor Central[39m[32m"[39m,
+        [34memail[39m: [32m"[39m[32mvendedor@hardstore.com[39m[32m"[39m,
+        #[33mpassword[39m: [32m"[39m\$[32m2y[39m\$[32m12[39m\$[32mVFLOFvCvxIaNs6hn8ZNlP..xbwXbSZyvnlns1l3TUmE/FO4XqCWaW[39m[32m"[39m,
+        [34mrol[39m: [32m"[39m[32mvendedor[39m[32m"[39m,
+        #[33mremember_token[39m: [36mnull[39m,
+        [34mcreated_at[39m: [32m"[39m[32m2026-05-08 04:15:22[39m[32m"[39m,
+        [34mupdated_at[39m: [32m"[39m[32m2026-05-08 04:15:22[39m[32m"[39m,
+      },
+    ],
+  }
