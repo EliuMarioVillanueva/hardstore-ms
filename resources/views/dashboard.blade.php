@@ -154,6 +154,49 @@
         text-decoration: none;
     }
 
+    /* Filtros */
+    .form-control-pixelfed, .form-select-pixelfed {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 0.6rem 1rem;
+        color: white;
+        font-size: 0.85rem;
+    }
+
+    .form-control-pixelfed:focus, .form-select-pixelfed:focus {
+        border-color: #0095f6;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 149, 246, 0.2);
+    }
+
+    .btn-primary-pixelfed {
+        background: linear-gradient(135deg, #0095f6, #00c3ff);
+        border: none;
+        border-radius: 40px;
+        padding: 0.6rem 1.2rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .btn-primary-pixelfed:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 149, 246, 0.4);
+    }
+
+    /* Badge sucursal */
+    .badge-sucursal {
+        background: rgba(0, 149, 246, 0.15);
+        color: #0095f6;
+        padding: 0.3rem 0.75rem;
+        border-radius: 40px;
+        font-size: 0.7rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
         .px-table thead {
@@ -180,18 +223,6 @@
             text-transform: uppercase;
         }
     }
-    .badge-sucursal {
-    background: rgba(0, 149, 246, 0.15);
-    color: #0095f6;
-    padding: 0.3rem 0.75rem;
-    border-radius: 40px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-
-}
 </style>
 
 <div class="dashboard-container">
@@ -223,6 +254,41 @@
             <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
         </div>
     @endif
+
+    <!-- ============================================ -->
+    <!-- FILTROS DE FECHA                             -->
+    <!-- ============================================ -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="px-card p-3">
+                <form method="GET" action="{{ route('dashboard') }}" class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label text-white small fw-bold">Desde</label>
+                        <input type="date" name="fecha_inicio" class="form-control form-control-pixelfed" 
+                               value="{{ $fechaInicio ?? now()->startOfMonth()->toDateString() }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-white small fw-bold">Hasta</label>
+                        <input type="date" name="fecha_fin" class="form-control form-control-pixelfed" 
+                               value="{{ $fechaFin ?? now()->toDateString() }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-white small fw-bold">Rápido</label>
+                        <select name="rango" class="form-select form-select-pixelfed">
+                            <option value="dia" {{ ($rango ?? 'mes') == 'dia' ? 'selected' : '' }}>Hoy</option>
+                            <option value="semana" {{ ($rango ?? 'mes') == 'semana' ? 'selected' : '' }}>Esta semana</option>
+                            <option value="mes" {{ ($rango ?? 'mes') == 'mes' ? 'selected' : '' }}>Este mes</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary-pixelfed w-100">
+                            <i class="bi bi-search me-2"></i>Filtrar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Fila 1: KPIs Rápidos -->
     <div class="row g-4 mb-4">
@@ -336,14 +402,15 @@
                             <i class="bi bi-receipt me-2" style="color: #0095f6;"></i>
                             Centro de Ventas y Vendedores
                         </h5>
-                        <a href="{{ route('reporte.ventas') }}" class="btn btn-sm btn-outline-pixelfed" target="_blank">
-                            <i class="bi bi-file-pdf me-1"></i> Reporte PDF
+                        <a href="{{ route('reporte.ventas', ['fecha_inicio' => $fechaInicio, 'fecha_fin' => $fechaFin]) }}" 
+                           class="btn btn-sm btn-outline-pixelfed" target="_blank">
+                            <i class="bi bi-file-pdf me-1"></i> Reporte PDF del período
                         </a>
                     </div>
                 </div>
                 <div class="table-responsive">
                     <table class="px-table">
-                        <<thead>
+                        <thead>
                             <tr>
                                 <th>Venta ID</th>
                                 <th>Responsable</th>
@@ -356,42 +423,42 @@
                         <tbody>
                             @forelse($ventasRecientes as $venta)
                             <tr>
-                                    <td data-label="ID">
-                                        <span class="fw-bold text-white">#{{ $venta->id }}</span>
-                                    </td>
-                                    <td data-label="Responsable">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="avatar-sm">
-                                                {{ substr($venta->usuario->name, 0, 2) }}
-                                            </div>
-                                            <span>{{ $venta->usuario->name }}</span>
+                                <td data-label="ID">
+                                    <span class="fw-bold text-white">#{{ $venta->id }}</span>
+                                </td>
+                                <td data-label="Responsable">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-sm">
+                                            {{ substr($venta->usuario->name, 0, 2) }}
                                         </div>
-                                    </td>
-                                    <td data-label="Sucursal">
-                                        <span class="badge-sucursal">
-                                            <i class="bi bi-building me-1"></i>
-                                            {{ $venta->sucursal->name ?? 'Sucursal no asignada' }}
-                                        </span>
-                                    </td>
-                                    <td data-label="Fecha">
-                                        <span class="small">{{ $venta->created_at->format('d/m/Y H:i') }}</span>
-                                    </td>
-                                    <td data-label="Total">
-                                        <span class="fw-bold" style="color: #0095f6;">${{ number_format($venta->total, 0, ',', '.') }}</span>
-                                    </td>
-                                    <td data-label="Estado" class="text-end">
-                                        <span class="badge-completed">
-                                            <i class="bi bi-check-circle me-1"></i>COMPLETADO
-                                        </span>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="5" class="text-center py-5">
-                                        <i class="bi bi-inbox fs-1 text-muted"></i>
-                                        <p class="text-muted mt-2 mb-0">No hay ventas registradas</p>
-                                    </td>
-                                </tr>
+                                        <span>{{ $venta->usuario->name }}</span>
+                                    </div>
+                                </td>
+                                <td data-label="Sucursal">
+                                    <span class="badge-sucursal">
+                                        <i class="bi bi-building me-1"></i>
+                                        {{ $venta->sucursal->name ?? 'Sucursal no asignada' }}
+                                    </span>
+                                </td>
+                                <td data-label="Fecha">
+                                    <span class="small">{{ $venta->created_at->format('d/m/Y H:i') }}</span>
+                                </td>
+                                <td data-label="Total">
+                                    <span class="fw-bold" style="color: #0095f6;">${{ number_format($venta->total, 0, ',', '.') }}</span>
+                                </td>
+                                <td data-label="Estado" class="text-end">
+                                    <span class="badge-completed">
+                                        <i class="bi bi-check-circle me-1"></i>COMPLETADO
+                                    </span>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <i class="bi bi-inbox fs-1 text-muted"></i>
+                                    <p class="text-muted mt-2 mb-0">No hay ventas en el período seleccionado</p>
+                                </td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>

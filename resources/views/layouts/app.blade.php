@@ -301,19 +301,21 @@
                                 <span>{{ Auth::user()->name }}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end w-100">
-                                @if(auth()->user()->rol === 'admin')
-                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('productos.stock') }}"><i class="bi bi-box-seam me-2"></i>Inventario</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('productos.create') }}"><i class="bi bi-plus-square me-2"></i>Publicar</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                @endif
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Salir</button>
-                                    </form>
-                                </li>
-                            </ul>
+    <li><a class="dropdown-item" href="{{ route('perfil.vendedor') }}"><i class="bi bi-person-circle me-2"></i>Mi Perfil</a></li>
+    <li><hr class="dropdown-divider"></li>
+    @if(auth()->user()->rol === 'admin')
+        <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+        <li><a class="dropdown-item" href="{{ route('productos.stock') }}"><i class="bi bi-box-seam me-2"></i>Inventario</a></li>
+        <li><a class="dropdown-item" href="{{ route('productos.create') }}"><i class="bi bi-plus-square me-2"></i>Publicar</a></li>
+        <li><hr class="dropdown-divider"></li>
+    @endif
+    <li>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Salir</button>
+        </form>
+    </li>
+</ul>
                         </div>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-outline w-100 w-lg-auto">Entrar</a>

@@ -486,14 +486,14 @@
                             <i class="bi bi-shield-lock me-1"></i> Modo Administrador - Stock visible
                         </div>
                     @else
-                        <p class="text-secondary small mb-0" style="font-size: 0.8rem;">
-                            <i class="bi bi-check-circle-fill text-success me-1"></i>
-                            Hay unidades disponibles en tu sucursal más cercana.
-                        </p>
-                        <a href="{{ route('sucursales.index') }}" class="btn btn-link text-primary p-0 mt-2 small" style="font-size: 0.8rem;">
-                            Ver sucursales <i class="bi bi-arrow-right"></i>
-                        </a>
-                    @endif
+    <p class="text-secondary small mb-0" style="font-size: 0.8rem;">
+        <i class="bi bi-check-circle-fill text-success me-1"></i>
+        Hay unidades disponibles en tu sucursal más cercana.
+    </p>
+    <a href="#footer-sucursales" class="btn btn-link text-primary p-0 mt-2 small" style="font-size: 0.8rem;">
+        Ver sucursales <i class="bi bi-arrow-right"></i>
+    </a>
+@endif
                 @else
                     <p class="text-secondary small mb-2" style="font-size: 0.8rem;">
                         <i class="bi bi-info-circle me-1"></i>

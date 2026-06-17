@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\PerfilVendedorController;
 
 // 1. RUTA DE INICIO (pública)
 Route::get('/', function () {
@@ -21,8 +22,16 @@ Route::get('/productos/{producto}', [ProductController::class, 'show'])->name('p
 // 3. RUTAS PROTEGIDAS (requieren autenticación)
 Route::middleware(['auth', 'verified'])->group(function () {
     
+    // Perfil de vendedor
+    Route::get('/perfil', [PerfilVendedorController::class, 'index'])->name('perfil.vendedor');
+    Route::get('/perfil/editar', [PerfilVendedorController::class, 'edit'])->name('perfil.editar');
+    Route::put('/perfil/update', [PerfilVendedorController::class, 'update'])->name('perfil.update');
+    
+    // 👇 AGREGAR ESTAS DOS LÍNEAS 👇
+    Route::get('/perfil/reporte/inventario', [PerfilVendedorController::class, 'reporteInventario'])->name('perfil.reporte.inventario');
+    Route::get('/perfil/reporte/ventas', [PerfilVendedorController::class, 'reporteVentas'])->name('perfil.reporte.ventas');
+    
     // Productos (solo admin)
-    Route::get('/productos/create', [ProductController::class, 'create'])->name('productos.create'); // ← AGREGAR ESTA LÍNEA
     Route::post('/productos', [ProductController::class, 'store'])->name('productos.store');
     
     // Inventario
@@ -40,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/reporte/ventas', [ReporteController::class, 'reporteVentas'])->name('reporte.ventas');
     Route::get('/reporte/inventario', [ReporteController::class, 'reporteInventario'])->name('reporte.inventario');
     
-    // FACTURAS - todas protegidas
+    // FACTURAS
     Route::get('/factura/generar/{venta}', [FacturaController::class, 'generarFactura'])->name('factura.generar');
     Route::get('/factura/descargar/{factura}', [FacturaController::class, 'descargarFactura'])->name('factura.descargar');
     Route::get('/factura/ver/{factura}', [FacturaController::class, 'verFactura'])->name('factura.ver');

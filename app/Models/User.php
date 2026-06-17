@@ -35,6 +35,7 @@ class User extends Authenticatable
     
      public function ventas() {
         return $this->hasMany(Venta::class, 'usuario_id');
+
     }
     public function sucursal() {
         return $this->belongsTo(Sucursal::class);
