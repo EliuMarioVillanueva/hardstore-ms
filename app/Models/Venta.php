@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Venta extends Model
 {
+    use HasFactory;
+
     protected $table = 'ventas';
     protected $fillable = ['usuario_id', 'total', 'fecha', 'sucursal_id'];
 

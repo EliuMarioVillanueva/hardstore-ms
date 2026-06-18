@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/factura/generar/{venta}', [FacturaController::class, 'generarFactura'])->name('factura.generar');
     Route::get('/factura/descargar/{factura}', [FacturaController::class, 'descargarFactura'])->name('factura.descargar');
     Route::get('/factura/ver/{factura}', [FacturaController::class, 'verFactura'])->name('factura.ver');
+
 });
 
 // 4. RUTAS DE AUTENTICACIÓN (Breeze)

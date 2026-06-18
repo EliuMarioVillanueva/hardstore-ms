@@ -51,6 +51,44 @@ class DashboardController extends Controller
             ->groupBy('branches.id', 'branches.name')
             ->get();
         
+        // ============================================
+        // RANKING DE VENDEDORES POR SUCURSAL
+        // ============================================
+        $topVendedores = DB::table('users')
+            ->join('ventas', 'users.id', '=', 'ventas.usuario_id')
+            ->where('users.rol', 'vendedor')
+            ->whereBetween('ventas.created_at', [$fechaInicio . ' 00:00:00', $fechaFin . ' 23:59:59'])
+            ->select(
+                'users.id',
+                'users.name',
+                'users.sucursal_id',
+                DB::raw('SUM(ventas.total) as total_vendido'),
+                DB::raw('COUNT(ventas.id) as cantidad_ventas')
+            )
+            ->groupBy('users.id', 'users.name', 'users.sucursal_id')
+            ->orderBy('total_vendido', 'desc')
+            ->limit(10)
+            ->get();
+        
+        // ============================================
+        // MEJORES CLIENTES
+        // ============================================
+        $mejoresClientes = DB::table('users')
+            ->join('ventas', 'users.id', '=', 'ventas.usuario_id')
+            ->where('users.rol', 'cliente')
+            ->whereBetween('ventas.created_at', [$fechaInicio . ' 00:00:00', $fechaFin . ' 23:59:59'])
+            ->select(
+                'users.id',
+                'users.name',
+                'users.email',
+                DB::raw('SUM(ventas.total) as total_gastado'),
+                DB::raw('COUNT(ventas.id) as cantidad_compras')
+            )
+            ->groupBy('users.id', 'users.name', 'users.email')
+            ->orderBy('total_gastado', 'desc')
+            ->limit(10)
+            ->get();
+        
         return view('dashboard', compact(
             'totalProductos',
             'totalVentas',
@@ -60,7 +98,9 @@ class DashboardController extends Controller
             'conteoGpus',
             'fechaInicio',
             'fechaFin',
-            'rango'
+            'rango',
+            'topVendedores',
+            'mejoresClientes'
         ));
     }
 }

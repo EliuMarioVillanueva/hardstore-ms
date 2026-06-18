@@ -391,6 +391,122 @@
             </div>
         </div>
     </div>
+        <!-- Fila 3: Ranking de Vendedores y Mejores Clientes -->
+    <div class="row g-4 mb-4">
+        <!-- Ranking de Vendedores -->
+        <div class="col-md-6">
+            <div class="px-card p-4">
+                <h5 class="fw-bold mb-3 text-white">
+                    <i class="bi bi-trophy-fill me-2" style="color: #ffc107;"></i>
+                    Top Vendedores
+                </h5>
+                <div class="table-responsive">
+                    <table class="px-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Vendedor</th>
+                                <th>Sucursal</th>
+                                <th class="text-end">Ventas</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($topVendedores as $index => $vendedor)
+                            <tr>
+                                <td>
+                                    @if($index == 0)
+                                        <i class="bi bi-trophy-fill fs-5" style="color: #ffc107;" title="1° lugar"></i>
+                                    @elseif($index == 1)
+                                        <i class="bi bi-trophy-fill fs-5 text-secondary" title="2° lugar"></i>
+                                    @elseif($index == 2)
+                                        <i class="bi bi-trophy-fill fs-5" style="color: #cd7f32;" title="3° lugar"></i>
+                                    @else
+                                        <span class="text-muted">#{{ $index + 1 }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-white">{{ $vendedor->name }}</span>
+                                </td>
+                                <td>
+                                    <span class="badge-sucursal">
+                                        {{ $vendedor->sucursal_id ? \App\Models\Branch::find($vendedor->sucursal_id)->name ?? 'N/A' : 'Sin sucursal' }}
+                                    </span>
+                                </td>
+                                <td class="text-end">{{ $vendedor->cantidad_ventas }}</td>
+                                <td class="text-end fw-bold" style="color: #0095f6;">
+                                    ${{ number_format($vendedor->total_vendido, 0, ',', '.') }}
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-3 text-muted">
+                                    No hay ventas de vendedores en este período
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mejores Clientes -->
+        <div class="col-md-6">
+            <div class="px-card p-4">
+                <h5 class="fw-bold mb-3 text-white">
+                    <i class="bi bi-stars me-2" style="color: #0095f6;"></i>
+                    Mejores Clientes
+                </h5>
+                <div class="table-responsive">
+                    <table class="px-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th class="text-center">Compras</th>
+                                <th class="text-end">Total Gastado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($mejoresClientes as $index => $cliente)
+                            <tr>
+                                <td>
+                                    @if($index == 0)
+                                        <i class="bi bi-trophy-fill fs-5" style="color: #ffc107;" title="1° lugar"></i>
+                                    @elseif($index == 1)
+                                        <i class="bi bi-trophy-fill fs-5 text-secondary" title="2° lugar"></i>
+                                    @elseif($index == 2)
+                                        <i class="bi bi-trophy-fill fs-5" style="color: #cd7f32;" title="3° lugar"></i>
+                                    @else
+                                        <span class="text-muted">#{{ $index + 1 }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div>
+                                        <span class="fw-bold text-white">{{ $cliente->name }}</span>
+                                        <br>
+                                        <small class="text-secondary">{{ $cliente->email }}</small>
+                                    </div>
+                                </td>
+                                <td class="text-center">{{ $cliente->cantidad_compras }}</td>
+                                <td class="text-end fw-bold" style="color: #0095f6;">
+                                    ${{ number_format($cliente->total_gastado, 0, ',', '.') }}
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-3 text-muted">
+                                    No hay clientes con compras en este período
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Fila 3: Tabla de Ventas Recientes -->
     <div class="row">
@@ -402,10 +518,10 @@
                             <i class="bi bi-receipt me-2" style="color: #0095f6;"></i>
                             Centro de Ventas y Vendedores
                         </h5>
-                        <a href="{{ route('reporte.ventas', ['fecha_inicio' => $fechaInicio, 'fecha_fin' => $fechaFin]) }}" 
-                           class="btn btn-sm btn-outline-pixelfed" target="_blank">
-                            <i class="bi bi-file-pdf me-1"></i> Reporte PDF del período
-                        </a>
+                        <a href="{{ route('reporte.ventas') }}" 
+   class="btn btn-sm btn-outline-pixelfed" target="_blank">
+    <i class="bi bi-file-pdf me-1"></i> Reporte de Ventas
+</a>
                     </div>
                 </div>
                 <div class="table-responsive">

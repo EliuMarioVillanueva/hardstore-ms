@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         UsuarioSeeder::class,  // 2. Tus nuevos usuarios (Admin/Vendedor)
         ProductSeeder::class,  // 3. Los productos (GPU, CPU, etc.)
         StockSeeder::class,    // 4. Cantidades en cada tienda
+        VentaSeeder::class,
     ]);
 }
 } 
