@@ -216,6 +216,13 @@
         .product-image {
             height: 160px;
         }
+        .alert-pixelfed {
+    background: rgba(0, 149, 246, 0.1);
+    border: 1px solid rgba(0, 149, 246, 0.2);
+    border-radius: 16px;
+    color: #0095f6;
+    padding: 1rem 1.2rem;
+}
     }
 </style>
 
@@ -284,6 +291,19 @@
                     @endif
                 @endauth
             </div>
+
+            <!-- Indicador de combo filtrado -->
+@if(request()->has('combo'))
+    <div class="alert alert-pixelfed mb-4 d-flex justify-content-between align-items-center">
+        <div>
+            <i class="bi bi-boxes me-2"></i>
+            <strong>Mostrando combo completo</strong> - CPU + Placa Base + RAM compatibles
+        </div>
+        <a href="{{ route('productos.index') }}" class="btn btn-sm btn-outline-pixelfed">
+            <i class="bi bi-x-lg me-1"></i> Limpiar filtro
+        </a>
+    </div>
+@endif
 
             <!-- Grid de productos -->
             @if($productos->count() > 0)

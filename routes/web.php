@@ -8,11 +8,10 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\PerfilVendedorController;
+use App\Http\Controllers\ComboController; // 👈 AGREGADO
 
-// 1. RUTA DE INICIO (pública)
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+// 1. RUTA DE INICIO (pública) - AHORA USA ComboController
+Route::get('/', [ComboController::class, 'index'])->name('welcome');
 
 // 2. RUTAS PÚBLICAS DE PRODUCTOS (solo lectura)
 Route::get('/productos', [ProductController::class, 'index'])->name('productos.index');
@@ -27,7 +26,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/perfil/editar', [PerfilVendedorController::class, 'edit'])->name('perfil.editar');
     Route::put('/perfil/update', [PerfilVendedorController::class, 'update'])->name('perfil.update');
     
-    // 👇 AGREGAR ESTAS DOS LÍNEAS 👇
     Route::get('/perfil/reporte/inventario', [PerfilVendedorController::class, 'reporteInventario'])->name('perfil.reporte.inventario');
     Route::get('/perfil/reporte/ventas', [PerfilVendedorController::class, 'reporteVentas'])->name('perfil.reporte.ventas');
     
@@ -53,7 +51,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/factura/generar/{venta}', [FacturaController::class, 'generarFactura'])->name('factura.generar');
     Route::get('/factura/descargar/{factura}', [FacturaController::class, 'descargarFactura'])->name('factura.descargar');
     Route::get('/factura/ver/{factura}', [FacturaController::class, 'verFactura'])->name('factura.ver');
-
 });
 
 // 4. RUTAS DE AUTENTICACIÓN (Breeze)

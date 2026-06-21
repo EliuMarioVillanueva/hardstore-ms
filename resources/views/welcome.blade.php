@@ -292,6 +292,21 @@
             font-size: 1rem;
         }
     }
+    .btn-outline-pixelfed {
+    background: transparent;
+    border: 1px solid rgba(0, 149, 246, 0.5);
+    color: #0095f6;
+    border-radius: 40px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-outline-pixelfed:hover {
+    background: #0095f6;
+    color: white;
+}
 </style>
 
 <!-- Hero Section -->
@@ -319,7 +334,7 @@
             <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-truck fs-5 text-primary me-2"></i> 
-                    <span class="small fw-semibold">Envíos a todo Chile</span>
+                    <span class="small fw-semibold">Envíos a toda Bolivia</span>
                 </div>
                 <div class="d-flex align-items-center">
                     <i class="bi bi-shield-check fs-5 text-primary me-2"></i> 
@@ -379,6 +394,61 @@
             </div>
         </div>
     </div>
+</section>
+<!-- ============================================ -->
+<!-- SECCIÓN DE COMBOS RECOMENDADOS               -->
+<!-- ============================================ -->
+<section class="container py-3 py-md-5 my-2 my-md-3" id="combos">
+    <div class="text-center mb-4 mb-md-5">
+        <h2 class="display-6 fw-bold">🔥 Combos Recomendados</h2>
+        <p class="text-secondary">Equipos compatibles listos para armar tu PC</p>
+    </div>
+
+    @if(isset($combos) && count($combos) > 0)
+        <div class="row g-3 g-md-4">
+            @foreach($combos as $index => $combo)
+                <div class="col-md-4 col-lg-3 fade-up">
+                    <div class="feature-card text-center p-3 p-md-4" style="border-color: rgba(40, 167, 69, 0.3);">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-primary bg-opacity-25 text-primary">Combo {{ $index + 1 }}</span>
+                            <span class="badge bg-success bg-opacity-25 text-success">
+                                <i class="bi bi-check-circle"></i> Disponible
+                            </span>
+                        </div>
+                        <div class="text-start">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-cpu text-primary"></i>
+                                <strong class="text-white small">{{ $combo['cpu']->name }}</strong>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="bi bi-motherboard text-primary"></i>
+                                <span class="text-secondary small">{{ $combo['placa']->name }}</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-memory text-primary"></i>
+                                <span class="text-secondary small">{{ $combo['ram']->name }}</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 d-flex justify-content-between align-items-center">
+                            <span class="fw-bold" style="color: #0095f6;">
+                                ${{ number_format($combo['cpu']->precio_venta + $combo['placa']->precio_venta + $combo['ram']->precio_venta, 0, ',', '.') }}
+                            </span>
+                            @if(isset($combo['cpu']->id) && $combo['cpu']->id > 0)
+                                <a href="{{ route('productos.index', ['combo' => $combo['cpu']->id]) }}" class="btn btn-sm btn-outline-pixelfed">
+                                    Ver combo completo
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="text-center py-4">
+            <i class="bi bi-boxes fs-1 text-muted"></i>
+            <p class="text-muted mt-2">No hay combos disponibles en este momento.</p>
+        </div>
+    @endif
 </section>
 
 <!-- Estadísticas -->
