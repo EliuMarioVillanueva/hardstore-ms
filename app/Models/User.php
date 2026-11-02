@@ -40,4 +40,18 @@ class User extends Authenticatable
     public function sucursal() {
         return $this->belongsTo(Sucursal::class);
     }
+    public function favoritos()
+    {
+        return $this->hasMany(Favorito::class);
+    }
+
+    public function puntos()
+    {
+        return $this->hasOne(Punto::class);
+    }
+
+    public function descuentos()
+    {
+        return $this->hasMany(Descuento::class);
+    }
 }

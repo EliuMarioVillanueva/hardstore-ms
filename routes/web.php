@@ -9,7 +9,8 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\PerfilVendedorController;
 use App\Http\Controllers\ComboController;
-use App\Http\Controllers\VentaPendienteController; // 👈 AGREGAR ESTO
+use App\Http\Controllers\VentaPendienteController; 
+use App\Http\Controllers\ClienteController;
 
 // 1. RUTA DE INICIO (pública)
 Route::get('/', [ComboController::class, 'index'])->name('welcome');
@@ -57,6 +58,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/factura/generar/{venta}', [FacturaController::class, 'generarFactura'])->name('factura.generar');
     Route::get('/factura/descargar/{factura}', [FacturaController::class, 'descargarFactura'])->name('factura.descargar');
     Route::get('/factura/ver/{factura}', [FacturaController::class, 'verFactura'])->name('factura.ver');
+
+    Route::get('/mi-panel', [ClienteController::class, 'panel'])->name('cliente.panel');
+    Route::get('/mi-panel/gacha', [ClienteController::class, 'gacha'])->name('cliente.gacha');
+    Route::post('/mi-panel/gacha/tirar', [ClienteController::class, 'tirarGacha'])->name('cliente.gacha.tirar');
+    Route::post('/mi-panel/favoritos/{producto}', [ClienteController::class, 'toggleFavorito'])->name('cliente.favoritos.toggle');
 });
 
 // 4. RUTAS DE AUTENTICACIÓN (Breeze)
