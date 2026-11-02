@@ -8,9 +8,10 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\PerfilVendedorController;
-use App\Http\Controllers\ComboController; // 👈 AGREGADO
+use App\Http\Controllers\ComboController;
+use App\Http\Controllers\VentaPendienteController; // 👈 AGREGAR ESTO
 
-// 1. RUTA DE INICIO (pública) - AHORA USA ComboController
+// 1. RUTA DE INICIO (pública)
 Route::get('/', [ComboController::class, 'index'])->name('welcome');
 
 // 2. RUTAS PÚBLICAS DE PRODUCTOS (solo lectura)
@@ -37,8 +38,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/inventario/{id}', [ProductController::class, 'updateStock'])->name('productos.update_stock');
     Route::patch('/inventario-ajax/{id}', [ProductController::class, 'updateStockAjax'])->name('productos.update_stock_ajax');
     
-    // Ventas
+    // Ventas (una sola vez)
     Route::post('/ventas/express', [VentaController::class, 'storeExpress'])->name('ventas.store_express');
+    Route::get('/ventas/qr/{id}', [VentaController::class, 'qr'])->name('ventas.qr');
+    
+    // Ventas pendientes (vendedor)
+    Route::get('/ventas-pendientes', [VentaPendienteController::class, 'index'])->name('ventas.pendientes');
+    Route::post('/ventas-pendientes/{id}/confirmar', [VentaPendienteController::class, 'confirmar'])->name('ventas.confirmar');
     
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

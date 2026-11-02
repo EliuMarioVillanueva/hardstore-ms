@@ -10,7 +10,20 @@ class Venta extends Model
     use HasFactory;
 
     protected $table = 'ventas';
-    protected $fillable = ['usuario_id', 'total', 'fecha', 'sucursal_id'];
+    protected $fillable = [
+        'usuario_id',
+        'total',
+        'fecha',
+        'sucursal_id',
+        'estado',
+        'metodo_pago',
+        'confirmado_at',
+        'confirmado_por',
+    ];
+
+    protected $casts = [
+        'confirmado_at' => 'datetime',
+    ];
 
     public function user() {
         return $this->belongsTo(User::class, 'usuario_id');
@@ -24,12 +37,17 @@ class Venta extends Model
         return $this->belongsTo(User::class, 'usuario_id');
     }
 
-    // 👇 AGREGAR ESTE MÉTODO
     public function sucursal() {
         return $this->belongsTo(Branch::class, 'sucursal_id');
     }
+
     public function factura()
     {
         return $this->hasOne(Factura::class);
+    }
+
+    public function confirmadoPor()
+    {
+        return $this->belongsTo(User::class, 'confirmado_por');
     }
 }
