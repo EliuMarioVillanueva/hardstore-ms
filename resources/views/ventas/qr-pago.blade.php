@@ -35,11 +35,11 @@
 
                 <!-- Botones -->
                 <div class="d-flex gap-2">
-                    <a href="{{ route('productos.index') }}" class="btn btn-pixelfed-outline w-50">
+                    <a href="{{ route('productos.index') }}" class="btn w-50" style="background: rgba(0, 149, 246, 0.15); border: 1px solid rgba(0, 149, 246, 0.4); color: #0095f6; border-radius: 2rem; padding: 0.6rem 1rem; font-weight: 500; transition: all 0.2s;">
                         <i class="bi bi-arrow-left me-2"></i>Volver
                     </a>
-                    <a href="{{ route('cliente.panel') }}" class="btn btn-pixelfed-primary w-50">
-                        <i class="bi bi-person me-2"></i>Mi Panel
+                    <a href="{{ route('productos.index') }}" class="btn w-50" style="background: linear-gradient(135deg, #0095f6, #00c3ff); border: none; color: white; border-radius: 2rem; padding: 0.6rem 1rem; font-weight: 600; transition: all 0.2s;">
+                        <i class="bi bi-grid me-2"></i>Seguir comprando
                     </a>
                 </div>
             </div>

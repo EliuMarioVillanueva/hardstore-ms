@@ -52,19 +52,35 @@ class PerfilVendedorController extends Controller
             ->take(10)
             ->get();
         
+        // ========== VENTAS PENDIENTES DE LA SUCURSAL ==========
+        $ventasPendientes = Venta::with(['usuario', 'detalles.producto', 'sucursal'])
+            ->where('sucursal_id', $sucursalId)
+            ->where('estado', 'pendiente')
+            ->latest()
+            ->get();
+        
         return view('perfil.vendedor', compact(
             'user', 'sucursalId', 'totalVentasSucursal', 'cantidadVentasSucursal',
             'productosVendidosSucursal', 'productos', 'totalProductos', 
-            'totalUnidades', 'productosBajoStock', 'ventasRecientes'
+            'totalUnidades', 'productosBajoStock', 'ventasRecientes',
+            'ventasPendientes'
         ));
     }
     
-    // Reporte de inventario de la sucursal
     public function reporteInventario()
     {
         $user = Auth::user();
         $sucursalId = $user->sucursal_id;
+        
+        if (!$sucursalId) {
+            return redirect()->back()->with('error', 'No tienes una sucursal asignada.');
+        }
+        
         $sucursal = \App\Models\Branch::find($sucursalId);
+        
+        if (!$sucursal) {
+            return redirect()->back()->with('error', 'La sucursal asignada no existe.');
+        }
         
         $productos = Product::whereHas('stocks', function($query) use ($sucursalId) {
             $query->where('sucursal_id', $sucursalId);
@@ -77,12 +93,20 @@ class PerfilVendedorController extends Controller
         return $pdf->stream('inventario-' . $sucursal->name . '-' . now()->format('Y-m-d') . '.pdf');
     }
     
-    // Reporte de ventas de la sucursal
     public function reporteVentas(Request $request)
     {
         $user = Auth::user();
         $sucursalId = $user->sucursal_id;
+        
+        if (!$sucursalId) {
+            return redirect()->back()->with('error', 'No tienes una sucursal asignada.');
+        }
+        
         $sucursal = \App\Models\Branch::find($sucursalId);
+        
+        if (!$sucursal) {
+            return redirect()->back()->with('error', 'La sucursal asignada no existe.');
+        }
         
         $fechaInicio = $request->get('fecha_inicio', now()->startOfMonth()->toDateString());
         $fechaFin = $request->get('fecha_fin', now()->toDateString());

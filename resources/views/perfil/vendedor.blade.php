@@ -233,6 +233,11 @@
                             <i class="bi bi-receipt me-2"></i>Ventas
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pendientes-tab" data-bs-toggle="tab" data-bs-target="#pendientes" type="button" role="tab">
+                        <i class="bi bi-clock-history me-2"></i>Pendientes
+                        </button>
+                    </li>
                 </ul>
 
                 <!-- Contenido de las pestañas -->
@@ -355,6 +360,54 @@
                             @endif
                         </div>
                     </div>
+                    <!-- Pestaña Pendientes -->
+<div class="tab-pane fade" id="pendientes" role="tabpanel">
+    <div class="d-flex justify-content-end mb-3">
+        <span class="badge bg-warning bg-opacity-25 text-warning">
+            <i class="bi bi-clock me-1"></i>{{ $ventasPendientes->count() ?? 0 }} pendientes
+        </span>
+    </div>
+    <div class="table-scroll">
+        @if(isset($ventasPendientes) && $ventasPendientes->count() > 0)
+            <table class="inventario-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Monto</th>
+                        <th>Fecha</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($ventasPendientes as $venta)
+                    <tr>
+                        <td data-label="ID">#{{ $venta->id }}</td>
+                        <td data-label="Cliente">{{ $venta->usuario->name }}</td>
+                        <td data-label="Producto">{{ $venta->detalles->first()->producto->name }}</td>
+                        <td data-label="Monto" class="fw-bold" style="color: #0095f6;">${{ number_format($venta->total, 0, ',', '.') }}</td>
+                        <td data-label="Fecha">{{ $venta->created_at->format('d/m/Y H:i') }}</td>
+                        <td data-label="Acción">
+                            <form action="{{ route('ventas.confirmar', $venta->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-sm w-100" style="background: linear-gradient(135deg, #28a745, #20c997); border: none; color: white; border-radius: 2rem; padding: 0.3rem 0.8rem; font-weight: 600;">
+                                    <i class="bi bi-check-circle me-1"></i>Confirmar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <div class="text-center py-4">
+                <i class="bi bi-inbox fs-1 text-muted"></i>
+                <p class="text-muted mt-2 mb-0">No hay ventas pendientes.</p>
+            </div>
+        @endif
+    </div>
+</div>
                 </div>
             </div>
         </div>

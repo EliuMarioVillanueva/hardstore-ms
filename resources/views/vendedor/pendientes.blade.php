@@ -24,8 +24,8 @@
                         <p class="text-secondary small mb-3">Fecha: {{ $venta->created_at->format('d/m/Y H:i') }}</p>
                         <form action="{{ route('ventas.confirmar', $venta->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-pixelfed-primary w-100">
-                                <i class="bi bi-check-circle me-2"></i>Confirmar Pago
+                            <button type="submit" class="btn w-100" style="background: linear-gradient(135deg, #28a745, #20c997); border: none; color: white; border-radius: 2rem; padding: 0.6rem 1rem; font-weight: 600; transition: all 0.2s;">
+                            <i class="bi bi-check-circle me-2"></i>Confirmar Pago
                             </button>
                         </form>
                     </div>

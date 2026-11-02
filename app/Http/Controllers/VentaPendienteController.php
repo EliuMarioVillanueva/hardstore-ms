@@ -43,9 +43,6 @@ class VentaPendienteController extends Controller
         $facturaController = new FacturaController();
         $facturaController->generarFactura($venta);
 
-        // Notificar al cliente (email)
-        // Mail::to($venta->usuario->email)->send(new \App\Mail\CompraConfirmada($venta));
-
         return back()->with('success', 'Venta confirmada correctamente.');
     }
-}w
+}
