@@ -1,58 +1,106 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🖥️ HardStore MS - Plataforma de Gestión y Ventas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Laravel](https://img.shields.io/badge/Laravel-13.x-red?style=for-the-badge&logo=laravel)
+![PHP](https://img.shields.io/badge/PHP-8.4-blue?style=for-the-badge&logo=php)
+![MariaDB](https://img.shields.io/badge/MariaDB-10.x-003545?style=for-the-badge&logo=mariadb)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-## About Laravel
+> **HardStore MS** es una solución integral diseñada para centralizar, controlar y potenciar la gestión de una tienda de hardware con múltiples sucursales. Desde el control de inventario en tiempo real hasta el análisis de ventas y la atención al cliente con Inteligencia Artificial.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🎯 ¿Qué problema resuelve?
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Las tiendas de hardware con múltiples sucursales suelen enfrentar problemas de **descentralización de la información**, **falta de control de stock** y **procesos de venta lentos**. HardStore MS resuelve esto mediante:
 
-## Learning Laravel
+1.  **Control Multi-Sucursal:** Visualización unificada del inventario distribuido en diferentes puntos de venta (Sede Central, Norte, Sur, etc.).
+2.  **Trazabilidad Total:** Cada movimiento de stock, venta y confirmación de pago queda registrado con el usuario responsable y la sucursal de origen.
+3.  **Compatibilidad de Componentes:** Un sistema de validación técnica que ayuda a los clientes a no comprar piezas incompatibles (ej. placas base con sockets de CPU diferentes).
+4.  **Fidelización del Cliente:** Sistema de puntos, gacha de descuentos y lista de deseos para incentivar la recompra.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🚀 Características Principales
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### 🛒 Para el Cliente
+*   **Catálogo Interactivo:** Búsqueda semántica y filtros por categoría (CPUs, GPUs, RAM, etc.) con diseño responsivo (Mobile-First).
+*   **Sistema de Puntos y Gacha:** Gana puntos por cada compra y canjéalos por descuentos aleatorios (5%, 10%, 15% o envío gratis).
+*   **Asistente Virtual con IA (HardBot):** Chatbot impulsado por **Ollama (Llama 3.2)** que ayuda a armar PCs según el presupuesto, verifica stock y consulta precios en tiempo real.
+*   **Compra con Pago por QR:** Generación de códigos QR con los datos de transferencia bancaria y el detalle exacto de la compra.
+*   **Panel de Cliente:** Historial de compras, seguimiento de pedidos y gestión de favoritos.
 
-## Agentic Development
+### 📊 Para el Administrador
+*   **Dashboard Analítico:** Gráficos de rendimiento, Top Vendedores, Mejores Clientes y filtros de ventas por fechas (día, semana, mes).
+*   **Reportes PDF:** Exportación de reportes detallados de ventas e inventario con la herramienta DomPDF.
+*   **Gestión de Inventario:** Control de stock en tiempo real por sucursal, con alertas visuales para productos por agotarse.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 💼 Para el Vendedor
+*   **Gestión de Sucursal:** Vista limitada a su sucursal asignada.
+*   **Confirmación de Ventas:** Bandeja de entrada para verificar pagos por transferencia y confirmar pedidos (lo que descuenta el stock y genera la factura).
+*   **Reportes Locales:** Descarga de inventario y ventas exclusivos de su sucursal.
+
+---
+
+## 🧠 Módulo de Inteligencia Artificial
+
+HardStore MS integra un asistente virtual local para evitar depender de APIs de pago y proteger la privacidad de los datos.
+*   **Motor:** [Ollama](https://ollama.com/)
+*   **Modelo:** `llama3.2:1b`
+*   **Funcionalidad:** El asistente está contextualizado con la base de datos de la tienda. Puede leer precios, verificar stock y armar combinaciones de componentes dentro de un presupuesto.
+
+---
+
+## 🛠️ Arquitectura y Tecnologías
+
+*   **Backend:** Laravel 13 (MVC).
+*   **Base de Datos:** MariaDB / MySQL.
+*   **Frontend:** Bootstrap 5, CSS personalizado, JavaScript nativo y Chart.js.
+*   **Autenticación:** Laravel Breeze (con roles: Admin, Vendedor, Cliente).
+*   **Herramientas extra:** Dompdf, Simple-QRCode, Laravel Socialite.
+
+---
+
+## 📸 Capturas de Pantalla
+
+*(Reemplaza estos enlaces con las imágenes reales de tu proyecto subidas a GitHub)*
+
+### Página Principal y Catálogo
+*(Aquí va la imagen de tu catálogo)*
+
+### Asistente Virtual (HardBot)
+*(Aquí va la imagen del chat del asistente)*
+
+### Dashboard del Administrador
+*(Aquí va la imagen del dashboard con gráficos)*
+
+---
+
+## ⚙️ Instalación y Despliegue Local
+
+Si deseas correr este proyecto en tu máquina:
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clonar el repositorio
+git clone https://github.com/EliuMarioVillanueva/hardstore-ms.git
 
-php artisan boost:install
-```
+# 2. Entrar al directorio
+cd hardstore-ms
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+# 3. Instalar dependencias
+composer install
+npm install
 
-## Contributing
+# 4. Configurar variables de entorno
+cp .env.example .env
+php artisan key:generate
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 5. Configurar la base de datos en el archivo .env (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
 
-## Code of Conduct
+# 6. Ejecutar migraciones y seeders (poblar con datos de prueba)
+php artisan migrate:fresh --seed
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# 7. Crear enlace simbólico para imágenes
+php artisan storage:link
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# 8. Iniciar el servidor
+php artisan serve
