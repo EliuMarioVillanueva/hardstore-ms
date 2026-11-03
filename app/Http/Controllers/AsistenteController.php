@@ -640,8 +640,8 @@ $mensaje .= "💰 **TOTAL ESTIMADO: \${$total}**\n";
         
         Pregunta del cliente: {$pregunta}";
         
-        // Usamos la IP de tu PC (192.168.1.35) para que funcione desde ngrok
-        $response = Http::timeout(120)->post('http://192.168.1.35:11434/api/generate', [
+        // 👇 IP CORRECTA: 192.168.100.157 (la que funcionó con curl)
+        $response = Http::timeout(120)->post('http://192.168.100.157:11434/api/generate', [
             'model' => 'llama3.2:1b',
             'prompt' => $prompt,
             'stream' => false,
@@ -652,10 +652,13 @@ $mensaje .= "💰 **TOTAL ESTIMADO: \${$total}**\n";
             return $data['response'] ?? 'Lo siento, no pude procesar tu consulta.';
         }
         
-        return "Lo siento, el asistente no está disponible en este momento.";
+        // Si Ollama responde con error, mostrar el código
+        return "Error de Ollama (código " . $response->status() . "). Intenta de nuevo.";
+        
     } catch (\Exception $e) {
-        Log::error('Error en Ollama: ' . $e->getMessage());
-        return "Lo siento, el asistente no está disponible. Intenta de nuevo más tarde.";
+        \Log::error('Error en Ollama: ' . $e->getMessage());
+        // 👇 Mostrar el error real para diagnosticar
+        return "Error de conexión: " . $e->getMessage();
     }
 }
 }
