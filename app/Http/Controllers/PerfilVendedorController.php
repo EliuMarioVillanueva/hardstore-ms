@@ -15,6 +15,15 @@ class PerfilVendedorController extends Controller
     public function index()
     {
         $user = Auth::user();
+    
+    // 👇 VERIFICAR QUE SEA VENDEDOR O ADMIN
+    if (!in_array($user->rol, ['vendedor', 'admin'])) {
+        return redirect()->route('cliente.panel')->with('error', 'No tienes permiso para acceder a esta sección.');
+    }
+    
+    $sucursalId = $user->sucursal_id;
+
+        $user = Auth::user();
         $sucursalId = $user->sucursal_id;
         
         // ========== ESTADÍSTICAS DE LA SUCURSAL ==========
@@ -69,6 +78,10 @@ class PerfilVendedorController extends Controller
     
     public function reporteInventario()
     {
+            $user = Auth::user();
+    if (!in_array($user->rol, ['vendedor', 'admin'])) {
+        return redirect()->route('cliente.panel');
+    }
         $user = Auth::user();
         $sucursalId = $user->sucursal_id;
         
@@ -95,6 +108,10 @@ class PerfilVendedorController extends Controller
     
     public function reporteVentas(Request $request)
     {
+            $user = Auth::user();
+    if (!in_array($user->rol, ['vendedor', 'admin'])) {
+        return redirect()->route('cliente.panel');
+    }
         $user = Auth::user();
         $sucursalId = $user->sucursal_id;
         
@@ -125,12 +142,20 @@ class PerfilVendedorController extends Controller
     
     public function edit()
     {
+            $user = Auth::user();
+    if (!in_array($user->rol, ['vendedor', 'admin'])) {
+        return redirect()->route('cliente.panel');
+    }
         $user = Auth::user();
         return view('perfil.editar', compact('user'));
     }
     
     public function update(Request $request)
     {
+            $user = Auth::user();
+    if (!in_array($user->rol, ['vendedor', 'admin'])) {
+        return redirect()->route('cliente.panel');
+    }
         $user = Auth::user();
         
         $request->validate([

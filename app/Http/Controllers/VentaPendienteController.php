@@ -30,19 +30,31 @@ class VentaPendienteController extends Controller
     }
 
     public function confirmar($id)
-    {
-        $venta = Venta::findOrFail($id);
-        
-        $venta->update([
-            'estado' => 'completado',
-            'confirmado_at' => now(),
-            'confirmado_por' => Auth::id(),
-        ]);
+{
+    $venta = Venta::findOrFail($id);
+    
+    $venta->update([
+        'estado' => 'completado',
+        'confirmado_at' => now(),
+        'confirmado_por' => Auth::id(),
+    ]);
 
-        // Generar factura
-        $facturaController = new FacturaController();
-        $facturaController->generarFactura($venta);
+    // 👇 DAR PUNTOS AL CLIENTE
+    $puntos = \App\Models\Punto::firstOrCreate(
+        ['user_id' => $venta->usuario_id],
+        ['cantidad' => 0, 'total_acumulado' => 0]
+    );
+    
+    // 1 punto por cada $10
+    $puntosGanados = floor($venta->total / 10);
+    $puntos->cantidad += $puntosGanados;
+    $puntos->total_acumulado += $puntosGanados;
+    $puntos->save();
 
-        return back()->with('success', 'Venta confirmada correctamente.');
-    }
+    // Generar factura
+    $facturaController = new FacturaController();
+    $facturaController->generarFactura($venta);
+
+    return back()->with('success', 'Venta confirmada. El cliente ganó ' . $puntosGanados . ' puntos.');
+}
 }

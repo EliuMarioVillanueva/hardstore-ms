@@ -11,6 +11,7 @@ use App\Http\Controllers\PerfilVendedorController;
 use App\Http\Controllers\ComboController;
 use App\Http\Controllers\VentaPendienteController; 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\AsistenteController;
 
 // 1. RUTA DE INICIO (pública)
 Route::get('/', [ComboController::class, 'index'])->name('welcome');
@@ -63,6 +64,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mi-panel/gacha', [ClienteController::class, 'gacha'])->name('cliente.gacha');
     Route::post('/mi-panel/gacha/tirar', [ClienteController::class, 'tirarGacha'])->name('cliente.gacha.tirar');
     Route::post('/mi-panel/favoritos/{producto}', [ClienteController::class, 'toggleFavorito'])->name('cliente.favoritos.toggle');
+    
+    // ASISTENTE IA - OLLAMA
+    Route::post('/asistente/consulta', [AsistenteController::class, 'consulta'])->name('asistente.consulta');
 });
 
 // 4. RUTAS DE AUTENTICACIÓN (Breeze)

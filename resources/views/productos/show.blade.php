@@ -528,28 +528,52 @@
             </div>
             
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-pixelfed-outline" data-bs-dismiss="modal">Cancelar</button>
-                <form action="{{ route('ventas.store_express') }}" method="POST" class="w-100">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <input type="hidden" name="cantidad" value="1">
+    <button type="button" class="btn btn-pixelfed-outline" data-bs-dismiss="modal">Cancelar</button>
+    <form action="{{ route('ventas.store_express') }}" method="POST" class="w-100">
+        @csrf
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+        <input type="hidden" name="cantidad" value="1">
 
-                    <div class="mb-3 text-start">
-                        <label class="form-label text-white fw-bold mb-2" style="font-size: 0.85rem;">
-                            <i class="bi bi-building me-1"></i>Seleccionar Sucursal:
-                        </label>
-                        <select name="sucursal_id" class="form-select form-select-pixelfed" required>
-                            @foreach($sucursales as $sucursal)
-                                <option value="{{ $sucursal->id }}">{{ $sucursal->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+        <div class="mb-3 text-start">
+            <label class="form-label text-white fw-bold mb-2" style="font-size: 0.85rem;">
+                <i class="bi bi-building me-1"></i>Seleccionar Sucursal:
+            </label>
+            <select name="sucursal_id" class="form-select form-select-pixelfed" required>
+                @foreach($sucursales as $sucursal)
+                    <option value="{{ $sucursal->id }}">{{ $sucursal->name }}</option>
+                @endforeach
+            </select>
+        </div>
 
-                    <button type="submit" class="btn btn-pixelfed-primary w-100">
-                        <i class="bi bi-check-circle me-2"></i>Confirmar Compra
-                    </button>
-                </form>
-            </div>
+        @auth
+            @php
+                $descuentos = \App\Models\Descuento::where('user_id', auth()->id())
+                    ->where('usado', false)
+                    ->get();
+            @endphp
+            
+            @if($descuentos->count() > 0)
+                <div class="mb-3 text-start">
+                    <label class="form-label text-white fw-bold mb-2" style="font-size: 0.85rem;">
+                        <i class="bi bi-ticket-perforated me-1"></i>Descuentos disponibles:
+                    </label>
+                    <select name="descuento_id" class="form-select form-select-pixelfed">
+                        <option value="">Sin descuento</option>
+                        @foreach($descuentos as $descuento)
+                            <option value="{{ $descuento->id }}">
+                                {{ $descuento->descripcion }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
+        @endauth
+
+        <button type="submit" class="btn btn-pixelfed-primary w-100">
+            <i class="bi bi-check-circle me-2"></i>Confirmar Compra
+        </button>
+    </form>
+</div>
         </div>
     </div>
 </div>

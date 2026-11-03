@@ -301,7 +301,11 @@
                                 <span>{{ Auth::user()->name }}</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end w-100">
-    <li><a class="dropdown-item" href="{{ route('perfil.vendedor') }}"><i class="bi bi-person-circle me-2"></i>Mi Perfil</a></li>
+    @if(auth()->user()->rol === 'cliente')
+        <li><a class="dropdown-item" href="{{ route('cliente.panel') }}"><i class="bi bi-person-circle me-2"></i>Mi Panel</a></li>
+    @else
+        <li><a class="dropdown-item" href="{{ route('perfil.vendedor') }}"><i class="bi bi-person-circle me-2"></i>Mi Perfil</a></li>
+    @endif
     <li><hr class="dropdown-divider"></li>
     @if(auth()->user()->rol === 'admin')
         <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
@@ -412,5 +416,6 @@
             });
         });
     </script>
+    @include('partials.asistente')
 </body>
 </html>

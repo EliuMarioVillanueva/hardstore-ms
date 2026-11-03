@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0f5bff66497ff173e4f9adfd9460638e",
+    "content-hash": "b5ab07efb9c4c2e43614a007ced59b41",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1389,6 +1389,80 @@
                 }
             ],
             "time": "2026-05-23T22:00:21+00:00"
+        },
+        {
+            "name": "hamzi/nativerag",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hamdyelbatal122/nativerag.git",
+                "reference": "2eed5e9478efcc9d06503c044f5a266ae420570c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hamdyelbatal122/nativerag/zipball/2eed5e9478efcc9d06503c044f5a266ae420570c",
+                "reference": "2eed5e9478efcc9d06503c044f5a266ae420570c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^11.0|^12.0|^13.0",
+                "illuminate/http": "^11.0|^12.0|^13.0",
+                "illuminate/support": "^11.0|^12.0|^13.0",
+                "php": "^8.2|^8.5",
+                "symfony/http-foundation": "^7.0|^8.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^10.0|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "NativeRag": "Hamzi\\NativeRag\\Facades\\NativeRag"
+                    },
+                    "providers": [
+                        "Hamzi\\NativeRag\\NativeRagServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hamzi\\NativeRag\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hamdy Elbatal",
+                    "email": "hamdyelbatal@hamzi.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A production-ready, privacy-first Local AI Controller and Retrieval-Augmented Generation (RAG) engine for Laravel 11, 12, and 13. Supports Ollama, LM Studio, zero-infra vector search, SSE streaming, and full conversational memory — all with 100% data residency.",
+            "homepage": "https://github.com/hamdyelbatal122/nativerag",
+            "keywords": [
+                "ai",
+                "embedding",
+                "laravel",
+                "llm",
+                "lmstudio",
+                "local-ai",
+                "ollama",
+                "php",
+                "rag",
+                "vector-search"
+            ],
+            "support": {
+                "issues": "https://github.com/hamdyelbatal122/nativerag/issues",
+                "source": "https://github.com/hamdyelbatal122/nativerag/tree/v1.2.0"
+            },
+            "time": "2026-10-04T16:14:25+00:00"
         },
         {
             "name": "laravel/framework",
