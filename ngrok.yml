@@ -1,0 +1,19 @@
+version: 3
+
+agent:
+  authtoken: 3FAtRwIjeIknQUgwV5M0vRbImYG_DKPUETepe1JD94CgzibJ
+
+endpoints:
+  - name: laravel
+    upstream:
+      url: 8000
+  - name: ollama
+    upstream:
+      url: 11434
+    traffic_policy:
+      on_http_request:
+        - actions:
+            - type: add-headers
+              config:
+                headers:
+                  host: localhost:11434

@@ -632,31 +632,30 @@ $mensaje .= "💰 **TOTAL ESTIMADO: \${$total}**\n";
     }
     
     private function consultarOllama($pregunta)
-    {
-        try {
-            $prompt = "Eres HardBot, el asistente de la tienda HardStore MS. 
-            Responde de forma breve, amable y útil en español. 
-            Si no sabes algo, di que no tienes esa información y sugiere consultar el catálogo.
-            
-            Pregunta del cliente: {$pregunta}";
-            $ollamaUrl = env('OLLAMA_BASE_URL', 'http://localhost:11434');
-$response = Http::timeout(60)->post($ollamaUrl . '/api/generate', [
-    
-            
-                'model' => 'llama3.2:1b',
-                'prompt' => $prompt,
-                'stream' => false,
-            ]);
-            
-            if ($response->successful()) {
-                $data = $response->json();
-                return $data['response'] ?? 'Lo siento, no pude procesar tu consulta.';
-            }
-            
-            return "Lo siento, el asistente no está disponible en este momento.";
-        } catch (\Exception $e) {
-            Log::error('Error en Ollama: ' . $e->getMessage());
-            return "Lo siento, el asistente no está disponible. Intenta de nuevo más tarde.";
+{
+    try {
+        $prompt = "Eres HardBot, el asistente de la tienda HardStore MS. 
+        Responde de forma breve, amable y útil en español. 
+        Si no sabes algo, di que no tienes esa información y sugiere consultar el catálogo.
+        
+        Pregunta del cliente: {$pregunta}";
+        
+        // Usamos la IP de tu PC (192.168.1.35) para que funcione desde ngrok
+        $response = Http::timeout(120)->post('http://192.168.1.35:11434/api/generate', [
+            'model' => 'llama3.2:1b',
+            'prompt' => $prompt,
+            'stream' => false,
+        ]);
+        
+        if ($response->successful()) {
+            $data = $response->json();
+            return $data['response'] ?? 'Lo siento, no pude procesar tu consulta.';
         }
+        
+        return "Lo siento, el asistente no está disponible en este momento.";
+    } catch (\Exception $e) {
+        Log::error('Error en Ollama: ' . $e->getMessage());
+        return "Lo siento, el asistente no está disponible. Intenta de nuevo más tarde.";
     }
+}
 }

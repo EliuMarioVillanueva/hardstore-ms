@@ -15,10 +15,8 @@ class VentaController extends Controller
     {
         $product = Product::findOrFail($request->product_id);
         
-        // Calcular total
         $total = $product->precio_venta * ($request->cantidad ?? 1);
         
-        // 👇 APLICAR DESCUENTO SI EXISTE
         $descuentoId = $request->input('descuento_id');
         $descuentoAplicado = null;
         
@@ -36,7 +34,6 @@ class VentaController extends Controller
             }
         }
 
-        // 1. Crear la Venta
         $venta = Venta::create([
             'usuario_id' => auth()->id(),
             'sucursal_id' => $request->sucursal_id,
@@ -46,14 +43,12 @@ class VentaController extends Controller
             'metodo_pago' => 'transferencia',
         ]);
 
-        // 2. Crear el Detalle
         $venta->detalles()->create([
             'producto_id' => $product->id,
             'cantidad' => $request->cantidad ?? 1,
             'precio_unitario_historico' => $product->precio_venta,
         ]);
 
-        // 3. Marcar descuento como usado
         if ($descuentoAplicado) {
             $descuentoAplicado->update([
                 'usado' => true,
@@ -61,12 +56,6 @@ class VentaController extends Controller
             ]);
         }
 
-        // 4. Notificar al vendedor (opcional)
-        $vendedor = User::where('rol', 'vendedor')
-            ->where('sucursal_id', $request->sucursal_id)
-            ->first();
-
-        // 5. Redirigir al QR
         return redirect()->route('ventas.qr', $venta->id)
             ->with('success', 'Compra registrada. Realiza la transferencia para confirmar.');
     }
@@ -74,42 +63,14 @@ class VentaController extends Controller
     public function qr($id)
     {
         $venta = Venta::with(['detalles.producto', 'sucursal', 'usuario'])->findOrFail($id);
-        
         return view('ventas.qr-pago', compact('venta'));
     }
 
-    public function index()
-    {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function index() { }
+    public function create() { }
+    public function store(Request $request) { }
+    public function show(string $id) { }
+    public function edit(string $id) { }
+    public function update(Request $request, string $id) { }
+    public function destroy(string $id) { }
 }
