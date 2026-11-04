@@ -12,9 +12,14 @@ use Illuminate\Support\Facades\Log;
 
 class AsistenteController extends Controller
 {
-    public function consulta(Request $request)
+        public function consulta(Request $request)
     {
-        $pregunta = $request->input('pregunta');
+        $pregunta = trim($request->input('pregunta'));
+        
+        if (empty($pregunta)) {
+            return response()->json(['respuesta' => 'Por favor, escribe una pregunta.']);
+        }
+
         $user = Auth::user();
         
         if ($user && $user->rol === 'admin') {
@@ -22,6 +27,12 @@ class AsistenteController extends Controller
         } else {
             $respuesta = $this->procesarCliente($pregunta);
         }
+        
+        \App\Models\ConsultaLog::create([
+            'user_id' => $user ? $user->id : null,
+            'pregunta' => $pregunta,
+            'respuesta' => $respuesta
+        ]);
         
         return response()->json(['respuesta' => $respuesta]);
     }
@@ -139,6 +150,48 @@ class AsistenteController extends Controller
             $productos = Product::whereHas('stocks', fn($q) => $q->where('cantidad', '<', 5))->count();
             return "Hay {$productos} productos por agotarse (menos de 5 unidades).";
         }
+                // Ventas del día
+        if (str_contains($preguntaLower, 'vendió hoy') || str_contains($preguntaLower, 'ventas de hoy')) {
+            $total = Venta::whereDate('created_at', now()->toDateString())->sum('total');
+            return "Las ventas de hoy son: $" . number_format($total, 0, ',', '.');
+        }
+        
+        // Ventas del mes
+        if (str_contains($preguntaLower, 'vendió este mes') || str_contains($preguntaLower, 'ventas del mes')) {
+            $total = Venta::whereMonth('created_at', now()->month)
+                ->whereYear('created_at', now()->year)
+                ->sum('total');
+            return "Las ventas de este mes son: $" . number_format($total, 0, ',', '.');
+        }
+        
+        // Ventas pendientes
+        if (str_contains($preguntaLower, 'pendientes') || str_contains($preguntaLower, 'por confirmar')) {
+            $pendientes = Venta::where('estado', 'pendiente')->count();
+            return "Hay **{$pendientes}** ventas pendientes de confirmación en este momento.";
+        }
+        
+        // Mejor cliente
+        if (str_contains($preguntaLower, 'mejor cliente') || str_contains($preguntaLower, 'cliente que más compra')) {
+            $mejorCliente = Venta::selectRaw('usuario_id, SUM(total) as total')
+                ->whereHas('usuario', fn($q) => $q->where('rol', 'cliente'))
+                ->groupBy('usuario_id')
+                ->orderBy('total', 'desc')
+                ->first();
+            if ($mejorCliente) {
+                $cliente = User::find($mejorCliente->usuario_id);
+                return "El mejor cliente es **{$cliente->name}** con un total de $" . number_format($mejorCliente->total, 0, ',', '.') . " en compras.";
+            }
+            return "No hay ventas de clientes registradas aún.";
+        }
+        
+        // Venta más alta
+        if (str_contains($preguntaLower, 'venta más alta') || str_contains($preguntaLower, 'venta más grande')) {
+            $venta = Venta::orderBy('total', 'desc')->first();
+            if ($venta) {
+                return "La venta más alta fue la **#{$venta->id}** por un total de $" . number_format($venta->total, 0, ',', '.') . ".";
+            }
+            return "No hay ventas registradas.";
+        }
         
         return $this->consultarOllama($pregunta);
     }
@@ -148,7 +201,8 @@ class AsistenteController extends Controller
         $preguntaLower = strtolower($pregunta);
         
         if (preg_match('/^(hola|buenas|hey|qué tal|que tal)/i', $preguntaLower)) {
-            return "¡Hola! Soy HardBot, tu asistente de HardStore MS. Puedo ayudarte a consultar precios, verificar stock, listar productos o recomendarte componentes para armar tu PC. ¿Qué necesitas?";
+            $nombre = Auth::check() ? Auth::user()->name : 'invitado';
+            return "¡Hola, {$nombre}! Soy HardBot, tu asistente de HardStore MS. Puedo ayudarte a consultar precios, verificar stock, listar productos o recomendarte componentes para armar tu PC. ¿Qué necesitas?";
         }
         
         if (str_contains($preguntaLower, 'envío') || str_contains($preguntaLower, 'envio') || str_contains($preguntaLower, 'enviar')) {
@@ -267,9 +321,119 @@ if (str_contains($preguntaLower, 'quiero comprar') || str_contains($preguntaLowe
         }
         
         if (str_contains($preguntaLower, 'compatibilidad') || str_contains($preguntaLower, 'compatible')) {
-    return $this->recomendarCompatible($pregunta);
-}
-        
+            return $this->recomendarCompatible($pregunta);
+        }
+
+                // ============================================
+        // NUEVOS CASOS DE USO
+        // ============================================
+
+        // Preguntar por el producto más barato o más caro
+        if (str_contains($preguntaLower, 'más barato') || str_contains($preguntaLower, 'mas barato') || str_contains($preguntaLower, 'económico') || str_contains($preguntaLower, 'economico')) {
+            $producto = Product::orderBy('precio_venta', 'asc')->first();
+            if ($producto) {
+                return "El producto más económico que tenemos es **{$producto->name}** a \${$producto->precio_venta}.";
+            }
+            return "No hay productos registrados.";
+        }
+
+        if (str_contains($preguntaLower, 'más caro') || str_contains($preguntaLower, 'mas caro') || str_contains($preguntaLower, 'caro')) {
+            $producto = Product::orderBy('precio_venta', 'desc')->first();
+            if ($producto) {
+                return "El producto más caro que tenemos es **{$producto->name}** a \${$producto->precio_venta}.";
+            }
+            return "No hay productos registrados.";
+        }
+
+        if (str_contains($preguntaLower, 'marcas') || str_contains($preguntaLower, 'marca')) {
+            return "Trabajamos con las mejores marcas del mercado: AMD, Intel, NVIDIA, ASUS, MSI, Gigabyte, Corsair, Kingston y más. ¿Buscas alguna en específico?";
+        }
+
+        if (str_contains($preguntaLower, 'sucursal') || str_contains($preguntaLower, 'dónde están') || str_contains($preguntaLower, 'donde estan') || str_contains($preguntaLower, 'dirección')) {
+            return "Tenemos 4 sucursales: Sede Central (Parque Industrial), Branch Norte (Centro Comercial), Branch Sur (Avenida Principal) y Punto de Venta Express (Terminal de Buses). Puedes ver las direcciones completas en el pie de página.";
+        }
+
+        if (str_contains($preguntaLower, 'horario') || str_contains($preguntaLower, 'hora')) {
+            return "Nuestro horario de atención es de lunes a sábado de 8:00 a 20:00. Los domingos cerramos.";
+        }
+
+        if (str_contains($preguntaLower, 'contacto') || str_contains($preguntaLower, 'teléfono') || str_contains($preguntaLower, 'telefono')) {
+            return "Puedes contactarnos al +56 2 1234 5678 o visitarnos en cualquiera de nuestras sucursales. También estamos en Instagram y Facebook.";
+        }
+
+        if (str_contains($preguntaLower, 'pago') || str_contains($preguntaLower, 'pagar') || str_contains($preguntaLower, 'transferencia')) {
+            return "Aceptamos transferencias bancarias. Al comprar, te mostramos un QR con los datos de la cuenta para que realices la transferencia. El vendedor confirmará tu pago.";
+        }
+
+        if (str_contains($preguntaLower, 'garantía') || str_contains($preguntaLower, 'garantia')) {
+            return "Todos nuestros productos tienen garantía oficial. Si tienes algún problema, contáctanos y te ayudamos.";
+        }
+
+        if (str_contains($preguntaLower, 'devolución') || str_contains($preguntaLower, 'devolucion') || str_contains($preguntaLower, 'reembolso')) {
+            return "Si tienes algún problema con tu producto, contáctanos dentro de los primeros 7 días para gestionar un cambio o devolución. Aplican términos y condiciones.";
+        }
+
+        if (str_contains($preguntaLower, 'quién eres') || str_contains($preguntaLower, 'quien eres') || str_contains($preguntaLower, 'tu nombre')) {
+            return "Soy HardBot, el asistente virtual de HardStore MS. Estoy aquí para ayudarte a encontrar productos, consultar precios y armar tu PC ideal. ¿Qué necesitas?";
+        }
+
+        if (str_contains($preguntaLower, 'promoción') || str_contains($preguntaLower, 'promocion') || str_contains($preguntaLower, 'descuento')) {
+            return "Tenemos un sistema de puntos: por cada $10 que gastes, ganas 1 punto. Al acumular 100 puntos, puedes tirar el gacha y ganar descuentos del 5%, 10%, 15% o envío gratis. ¡Visita tu panel de cliente para más detalles!";
+        }
+
+        if (str_contains($preguntaLower, 'mi pedido') || str_contains($preguntaLower, 'mi compra') || str_contains($preguntaLower, 'mi orden')) {
+            $user = Auth::user();
+            if ($user) {
+                $ultimaCompra = Venta::where('usuario_id', $user->id)->latest()->first();
+                if ($ultimaCompra) {
+                    $estado = $ultimaCompra->estado === 'completado' ? '✅ Completado' : '⏳ Pendiente de confirmación';
+                    return "Tu última compra fue la **#{$ultimaCompra->id}** por un total de \${$ultimaCompra->total}. El estado actual es: **{$estado}**. Puedes ver más detalles en tu panel de cliente.";
+                }
+                return "No encontré compras registradas a tu nombre. ¿Quizás quieres ver el catálogo?";
+            }
+            return "Para consultar tu pedido, primero debes iniciar sesión.";
+        }
+
+        if (str_contains($preguntaLower, 'socket') || str_contains($preguntaLower, 'núcleos') || str_contains($preguntaLower, 'especificaciones')) {
+            $producto = Product::where('name', 'LIKE', '%' . $this->extraerProducto($pregunta) . '%')
+                ->with('compatibility')
+                ->first();
+            
+            if ($producto && $producto->compatibility) {
+                $specs = "Especificaciones del **{$producto->name}**:\n\n";
+                if ($producto->compatibility->tipo_socket) $specs .= "🔹 Socket: {$producto->compatibility->tipo_socket}\n";
+                if ($producto->compatibility->tipo_ram) $specs .= "🔹 Tipo de RAM: {$producto->compatibility->tipo_ram}\n";
+                return $specs;
+            }
+            return "No encontré especificaciones técnicas para ese producto. ¿Puedes darme el nombre exacto?";
+        }
+
+        if (str_contains($preguntaLower, 'diferencia') || str_contains($preguntaLower, 'comparar') || str_contains($preguntaLower, 'mejor')) {
+            // Buscar si menciona AMD e Intel, o dos productos
+            if (str_contains($preguntaLower, 'amd') && str_contains($preguntaLower, 'intel')) {
+                return "AMD suele ofrecer mejor rendimiento en tareas multinúcleo y mejores precios, mientras que Intel destaca en juegos y tiene un mayor consumo energético. En HardStore MS tenemos opciones de ambas marcas. ¿Quieres que te muestre precios?";
+            }
+            if (str_contains($preguntaLower, 'ryzen 5') && str_contains($preguntaLower, 'ryzen 7')) {
+                return "El **Ryzen 5** es ideal para gaming y tareas diarias, mientras que el **Ryzen 7** es superior para edición de video y renderizado. La diferencia de precio vale la pena si haces tareas pesadas.";
+            }
+        }
+
+        if (str_contains($preguntaLower, 'no enciende') || str_contains($preguntaLower, 'no da imagen') || str_contains($preguntaLower, 'pantalla negra')) {
+            return "Si tu PC no enciende o no da imagen, te recomiendo verificar:\n\n1. Que el cable de poder esté bien conectado.\n2. Que la fuente de poder tenga el interruptor encendido.\n3. Que la RAM esté bien insertada (prueba con un solo módulo).\n\nSi el problema persiste, puedes traerlo a nuestra Sede Central para revisión técnica.";
+        }
+
+        if (str_contains($preguntaLower, 'qué categorías') || str_contains($preguntaLower, 'que categorias') || str_contains($preguntaLower, 'tipos de productos')) {
+            $categorias = Product::select('tipo')->distinct()->pluck('tipo')->implode(', ');
+            return "En HardStore MS tenemos las siguientes categorías: **{$categorias}**. ¿Qué tipo de componente estás buscando?";
+        }
+
+        if (str_contains($preguntaLower, 'háblame de') || str_contains($preguntaLower, 'hablame de') || str_contains($preguntaLower, 'información de')) {
+            $producto = Product::where('name', 'LIKE', '%' . $this->extraerProducto($pregunta) . '%')->first();
+            if ($producto) {
+                return "El **{$producto->name}** es un componente de tipo **{$producto->tipo}** con un precio de **\${$producto->precio_venta}**. Su SKU es {$producto->sku}. ¿Quieres saber si hay stock o si es compatible con tu equipo?";
+            }
+        }
+
         return $this->consultarOllama($pregunta);
     }
     
@@ -610,15 +774,25 @@ $mensaje .= "💰 **TOTAL ESTIMADO: \${$total}**\n";
     }
     
     private function contarPorTipo($tipo, $nombrePlural)
-    {
-        $total = Product::where('tipo', $tipo)->count();
-        
-        if ($total > 0) {
-            return "Sí, tenemos {$total} modelos de {$nombrePlural} disponibles.";
+{
+    $productos = Product::where('tipo', $tipo)->take(5)->get();
+    $total = Product::where('tipo', $tipo)->count();
+    
+    if ($total > 0) {
+        $lista = "";
+        foreach ($productos as $p) {
+            $lista .= "- {$p->name} (\${$p->precio_venta})\n";
         }
         
-        return "Lo siento, no tenemos {$nombrePlural} disponibles en este momento.";
+        $mensaje = "Sí, tenemos {$total} modelos de {$nombrePlural} disponibles. Algunos son:\n\n{$lista}";
+        if ($total > 5) {
+            $mensaje .= "\n... y otros más. ¿Te interesa alguno en particular?";
+        }
+        return $mensaje;
     }
+    
+    return "Lo siento, no tenemos {$nombrePlural} disponibles en este momento.";
+}
     
     private function extraerProducto($pregunta)
     {
@@ -634,18 +808,20 @@ $mensaje .= "💰 **TOTAL ESTIMADO: \${$total}**\n";
     private function consultarOllama($pregunta)
 {
     try {
-        $prompt = "Eres HardBot, el asistente de la tienda HardStore MS. 
-        Responde de forma breve, amable y útil en español. 
-        Si no sabes algo, di que no tienes esa información y sugiere consultar el catálogo.
+                $prompt = "Eres HardBot, el asistente virtual de la tienda de hardware HardStore MS.
+        REGLAS ESTRICTAS:
+        1. Responde de forma breve, amable y útil en español.
+        2. Solo puedes responder preguntas relacionadas con hardware de computadoras, componentes o la tienda HardStore MS.
+        3. Si el usuario pregunta sobre política, cocina, programación, historia o cualquier otro tema NO relacionado con la tienda, DEBES responder exactamente: 'Lo siento, mi conocimiento se limita exclusivamente a hardware y a los productos de HardStore MS. ¿Te puedo ayudar a armar tu PC o buscar algún componente?'.
+        4. NUNCA inventes productos o precios que no existan.
+
+        Pregunta del cliente: {$pregunta}";;
         
-        Pregunta del cliente: {$pregunta}";
-        
-        // 👇 IP CORRECTA: 192.168.100.157 (la que funcionó con curl)
-        $response = Http::timeout(120)->post('http://192.168.100.157:11434/api/generate', [
-            'model' => 'llama3.2:1b',
-            'prompt' => $prompt,
-            'stream' => false,
-        ]);
+        $response = Http::withoutVerifying()->timeout(120)->post('http://127.0.0.1:11434/api/generate', [
+    'model' => 'llama3.2:1b',
+    'prompt' => $prompt,
+    'stream' => false,
+]);
         
         if ($response->successful()) {
             $data = $response->json();

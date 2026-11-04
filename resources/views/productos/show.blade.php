@@ -2,33 +2,29 @@
 
 @section('content')
 <style>
-    /* ============================================ */
-    /* ESTILOS BASE CON UNIDADES RELATIVAS          */
-    /* ============================================ */
     
     .detail-card {
-        background: rgba(15, 25, 45, 0.6);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 1.5rem;
-        transition: all 0.3s ease;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        transition: border-color 0.3s ease;
         height: 100%;
     }
 
     .detail-card:hover {
-        border-color: rgba(0, 149, 246, 0.3);
+        border-color: var(--primary);
     }
 
-    /* Contenedor de imagen - centrado correctamente */
     .product-image-placeholder {
-        background: linear-gradient(135deg, rgba(0, 149, 246, 0.1), rgba(0, 195, 255, 0.05));
-        border-radius: 1.25rem;
+        background: var(--bg-base); /* Fondo oscuro para que resalte la imagen */
+        border-radius: 0.75rem;
         min-height: 280px;
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 1rem;
+        border: 1px solid var(--border-color);
     }
 
     .product-image-placeholder img {

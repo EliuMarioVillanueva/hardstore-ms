@@ -10,35 +10,32 @@
 
     /* Tarjetas estilo Pixelfed */
     .px-card {
-        background: rgba(15, 25, 45, 0.6);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        transition: all 0.3s ease;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
     }
 
     .px-card:hover {
-        border-color: rgba(0, 149, 246, 0.3);
-        transform: translateY(-3px);
+        border-color: var(--primary);
     }
 
     /* KPI Cards */
     .kpi-icon {
         width: 48px;
         height: 48px;
-        background: rgba(0, 149, 246, 0.15);
-        border-radius: 16px;
+        background: rgba(0, 149, 246, 0.1); 
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
-        color: #0095f6;
+        font-size: 1.2rem;
+        color: var(--primary);
     }
 
     .kpi-value {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         font-weight: 800;
-        color: white;
+        color: var(--text-main);
         line-height: 1.2;
     }
 
@@ -57,23 +54,21 @@
     }
 
     .px-table thead th {
-        background: rgba(0, 0, 0, 0.3);
-        color: #a0a0b0;
+        background: var(--bg-base);
+        color: var(--text-muted);
         font-weight: 600;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
         padding: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid var(--border-color);
     }
 
     .px-table tbody tr {
-        transition: all 0.2s ease;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid var(--border-color);
     }
 
     .px-table tbody tr:hover {
-        background: rgba(0, 149, 246, 0.05);
+        background: var(--bg-hover);
     }
 
     .px-table tbody td {
@@ -154,20 +149,19 @@
         text-decoration: none;
     }
 
-    /* Filtros */
     .form-control-pixelfed, .form-select-pixelfed {
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
+        background: var(--bg-base) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px;
         padding: 0.6rem 1rem;
-        color: white;
+        color: var(--text-main);
         font-size: 0.85rem;
     }
 
     .form-control-pixelfed:focus, .form-select-pixelfed:focus {
-        border-color: #0095f6;
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 1px var(--primary) !important;
         outline: none;
-        box-shadow: 0 0 0 2px rgba(0, 149, 246, 0.2);
     }
 
     .btn-primary-pixelfed {

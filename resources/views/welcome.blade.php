@@ -108,31 +108,25 @@
         .hero-visual { min-height: 35vh; }
     }
 
-    /* ============================================ */
-    /* FEATURE CARDS                                */
-    /* ============================================ */
     .feature-card {
-        background: rgba(15, 25, 45, 0.6);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 1.25rem;
-        padding: 1.2rem;
-        transition: all 0.3s ease;
+        background: var(--bg-surface); /* Color sólido */
+        border: 1px solid var(--border-color); /* Borde sutil */
+        border-radius: 1rem; /* Bordes un poco menos redondos */
+        padding: 1.5rem;
+        transition: border-color 0.3s ease, transform 0.3s ease;
         height: 100%;
     }
 
     .feature-card:hover {
-        border-color: rgba(0, 149, 246, 0.4);
-        transform: translateY(-0.3rem);
-        background: rgba(20, 30, 55, 0.7);
+        border-color: var(--primary);
+        transform: translateY(-4px);
+        /* Eliminamos el cambio de fondo y el blur */
     }
 
     .feature-icon {
         font-size: 2rem;
-        background: linear-gradient(135deg, #0095f6, #00c3ff);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        color: var(--primary); /* Icono sólido, sin gradiente */
+        margin-bottom: 1rem;
     }
 
     @media (min-width: 768px) {
@@ -145,27 +139,23 @@
         .feature-icon { font-size: 2.8rem; }
     }
 
-    /* ============================================ */
-    /* STAT CARDS                                   */
-    /* ============================================ */
     .stat-card {
-        background: rgba(15, 25, 45, 0.5);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        border-radius: 1.125rem;
-        padding: 1rem;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
         text-align: center;
-        transition: all 0.2s;
+        transition: border-color 0.2s;
     }
 
     .stat-card:hover {
-        border-color: rgba(0, 149, 246, 0.3);
+        border-color: var(--primary);
     }
 
     .stat-number {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         font-weight: 800;
-        color: #0095f6;
+        color: var(--text-main);
     }
 
     @media (min-width: 768px) {
@@ -178,16 +168,12 @@
         .stat-number { font-size: 2rem; }
     }
 
-    /* ============================================ */
-    /* CTA SECTION                                  */
-    /* ============================================ */
     .cta-section {
-        background: linear-gradient(135deg, rgba(0, 149, 246, 0.15), rgba(0, 195, 255, 0.08));
-        border: 1px solid rgba(0, 149, 246, 0.3);
-        border-radius: 1.5rem;
-        padding: 1.5rem;
+        background: var(--bg-surface); 
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 3rem 2rem;
         text-align: center;
-        backdrop-filter: blur(10px);
     }
 
     @media (min-width: 768px) {
@@ -198,21 +184,20 @@
         .cta-section { padding: 3rem; border-radius: 2rem; }
     }
 
-    .btn-cta {
-        background: linear-gradient(135deg, #0095f6, #00c3ff);
+       .btn-cta {
+        background: var(--primary);
         border: none;
-        padding: 0.6rem 1.5rem;
-        border-radius: 2.5rem;
-        font-weight: 700;
-        font-size: 0.9rem;
+        padding: 0.8rem 2rem;
+        border-radius: 8px; 
+        font-weight: 600;
+        font-size: 1rem;
         color: white;
-        transition: all 0.2s;
+        transition: background 0.2s;
         display: inline-block;
     }
 
     .btn-cta:hover {
-        transform: translateY(-0.125rem);
-        box-shadow: 0 0.5rem 1.5rem rgba(0, 149, 246, 0.4);
+        background: #0077cc;
         color: white;
     }
 
