@@ -3,8 +3,12 @@
 @section('content')
 <style>
     /* ============================================ */
-    /* HERO SECTION CON UNIDADES RELATIVAS          */
+    /* HERO SECTION (Original)                      */
     /* ============================================ */
+    .hero-section {
+        padding: 4rem 0;
+    }
+
     .hero-visual {
         position: relative;
         min-height: 40vh;
@@ -13,7 +17,6 @@
         justify-content: center;
     }
 
-    /* Imagen principal (PCerda) - más grande en desktop */
     .hero-main {
         position: relative;
         z-index: 10;
@@ -27,7 +30,6 @@
         transform: scale(1.02);
     }
 
-    /* Imágenes acompañantes - más grandes en desktop */
     .hero-bg-left {
         position: absolute;
         left: -10px;
@@ -64,417 +66,386 @@
         50% { transform: translateY(-45%) rotate(5deg); }
     }
 
-    /* ============================================ */
-    /* BREAKPOINTS PROGRESIVOS                      */
-    /* ============================================ */
-    
-    /* Tablet pequeña */
+    /* Breakpoints para las imágenes (los originales) */
     @media (min-width: 576px) {
         .hero-main { max-width: 380px; }
         .hero-bg-left { width: 160px; left: -20px; }
         .hero-bg-right { width: 150px; right: -20px; }
         .hero-visual { min-height: 45vh; }
     }
-
-    /* Tablet grande */
     @media (min-width: 768px) {
         .hero-main { max-width: 420px; }
         .hero-bg-left { width: 200px; left: -30px; opacity: 0.35; }
         .hero-bg-right { width: 180px; right: -30px; opacity: 0.35; }
         .hero-visual { min-height: 50vh; }
     }
-
-    /* Desktop pequeño */
     @media (min-width: 992px) {
         .hero-main { max-width: 480px; }
         .hero-bg-left { width: 250px; left: -40px; opacity: 0.35; filter: blur(3px); }
         .hero-bg-right { width: 230px; right: -40px; opacity: 0.35; filter: blur(3px); }
         .hero-visual { min-height: 55vh; }
     }
-
-    /* Desktop grande */
     @media (min-width: 1200px) {
         .hero-main { max-width: 550px; }
         .hero-bg-left { width: 300px; left: -60px; opacity: 0.3; filter: blur(4px); }
         .hero-bg-right { width: 280px; right: -60px; opacity: 0.3; filter: blur(4px); }
         .hero-visual { min-height: 65vh; }
     }
-
-    /* Móvil */
     @media (max-width: 575px) {
         .hero-main { max-width: 260px; }
         .hero-bg-left { width: 100px; left: -5px; opacity: 0.3; filter: blur(2px); }
         .hero-bg-right { width: 90px; right: -5px; opacity: 0.3; filter: blur(2px); }
         .hero-visual { min-height: 35vh; }
     }
-
-    .feature-card {
-        background: var(--bg-surface); /* Color sólido */
-        border: 1px solid var(--border-color); /* Borde sutil */
-        border-radius: 1rem; /* Bordes un poco menos redondos */
-        padding: 1.5rem;
-        transition: border-color 0.3s ease, transform 0.3s ease;
-        height: 100%;
-    }
-
-    .feature-card:hover {
-        border-color: var(--primary);
-        transform: translateY(-4px);
-        /* Eliminamos el cambio de fondo y el blur */
-    }
-
-    .feature-icon {
-        font-size: 2rem;
-        color: var(--primary); /* Icono sólido, sin gradiente */
-        margin-bottom: 1rem;
-    }
-
-    @media (min-width: 768px) {
-        .feature-card { padding: 1.5rem; }
-        .feature-icon { font-size: 2.5rem; }
-    }
-
-    @media (min-width: 1200px) {
-        .feature-card { padding: 1.8rem; }
-        .feature-icon { font-size: 2.8rem; }
-    }
-
-    .stat-card {
-        background: var(--bg-surface);
-        border: 1px solid var(--border-color);
-        border-radius: 1rem;
-        padding: 1.5rem;
-        text-align: center;
-        transition: border-color 0.2s;
-    }
-
-    .stat-card:hover {
-        border-color: var(--primary);
-    }
-
-    .stat-number {
-        font-size: 1.8rem;
+        /* ============================================ */
+    /* ESTILOS DEL TEXTO Y BOTONES DEL HERO         */
+    /* ============================================ */
+    .hero-title {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
         font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -2px;
         color: var(--text-main);
+        margin-bottom: 1.5rem;
     }
 
-    @media (min-width: 768px) {
-        .stat-card { padding: 1.2rem; }
-        .stat-number { font-size: 1.8rem; }
-    }
-
-    @media (min-width: 1200px) {
-        .stat-card { padding: 1.5rem; }
-        .stat-number { font-size: 2rem; }
-    }
-
-    .cta-section {
-        background: var(--bg-surface); 
-        border: 1px solid var(--border-color);
-        border-radius: 1rem;
-        padding: 3rem 2rem;
-        text-align: center;
-    }
-
-    @media (min-width: 768px) {
-        .cta-section { padding: 2rem; border-radius: 1.75rem; }
-    }
-
-    @media (min-width: 1200px) {
-        .cta-section { padding: 3rem; border-radius: 2rem; }
-    }
-
-       .btn-cta {
-        background: var(--primary);
-        border: none;
-        padding: 0.8rem 2rem;
-        border-radius: 8px; 
-        font-weight: 600;
-        font-size: 1rem;
-        color: white;
-        transition: background 0.2s;
-        display: inline-block;
-    }
-
-    .btn-cta:hover {
-        background: #0077cc;
-        color: white;
-    }
-
-    @media (min-width: 768px) {
-        .btn-cta { padding: 0.7rem 1.8rem; font-size: 1rem; }
-    }
-
-    @media (min-width: 1200px) {
-        .btn-cta { padding: 0.8rem 2rem; font-size: 1.1rem; }
-    }
-
-    /* ============================================ */
-    /* TEXTOS RESPONSIVOS                           */
-    /* ============================================ */
-    .display-4 {
-        font-size: 1.8rem;
-        font-weight: 700;
-    }
-
-    .display-6 {
-        font-size: 1.4rem;
-        font-weight: 700;
-    }
-
-    .lead {
-        font-size: 0.95rem;
-        line-height: 1.5;
-    }
-
-    @media (min-width: 768px) {
-        .display-4 { font-size: 2.2rem; }
-        .display-6 { font-size: 1.8rem; }
-        .lead { font-size: 1rem; }
+    .hero-subtitle {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        color: var(--text-muted);
+        max-width: 500px;
+        margin-bottom: 2.5rem;
+        /* En móvil centramos el subtítulo */
+        margin-left: auto;
+        margin-right: auto;
     }
 
     @media (min-width: 992px) {
-        .display-4 { font-size: 2.5rem; }
-        .display-6 { font-size: 2rem; }
-        .lead { font-size: 1.1rem; }
+        .hero-subtitle {
+            margin-left: 0;
+            margin-right: 0;
+        }
     }
 
-    @media (min-width: 1200px) {
-        .display-4 { font-size: 3rem; }
-        .lead { font-size: 1.2rem; }
+    /* Botones */
+    .btn-custom {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.8rem 1.8rem;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-custom-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-custom-primary:hover {
+        background: #4f46e5;
+        color: white;
+    }
+
+    .btn-custom-outline {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+    }
+
+    .btn-custom-outline:hover {
+        background: var(--bg-hover);
+        border-color: var(--text-muted);
+        color: white;
     }
 
     /* ============================================ */
-    /* ANIMACIONES                                  */
+    /* BENTO GRID (Para las características)        */
     /* ============================================ */
+    .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1px;
+        background: var(--border-color);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .bento-item {
+        background: var(--bg-surface);
+        padding: 2.5rem 2rem;
+        transition: background 0.2s;
+    }
+
+    .bento-item:hover {
+        background: var(--bg-hover);
+    }
+
+    .bento-icon {
+        font-size: 1.5rem;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+    }
+
+    .bento-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 0.5rem;
+    }
+
+    .bento-text {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    @media (min-width: 768px) {
+        .bento-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* ============================================ */
+    /* STATS SECTION (Sin cajas)                    */
+    /* ============================================ */
+    .stats-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 4rem 0;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .stat-item {
+        flex: 1;
+        min-width: 150px;
+        text-align: center;
+        border-right: 1px solid var(--border-color);
+    }
+
+    .stat-item:last-child {
+        border-right: none;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--text-main);
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-muted);
+        margin-top: 0.5rem;
+    }
+
+    @media (max-width: 767px) {
+        .stat-item {
+            border-right: none;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+    }
+
+    /* ============================================ */
+    /* BOTONES Y CTA                                */
+    /* ============================================ */
+    .btn-custom {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.8rem 1.8rem;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-custom-primary {
+        background: var(--primary);
+        color: white;
+    }
+
+    .btn-custom-primary:hover {
+        background: #4f46e5;
+        color: white;
+    }
+
+    .btn-custom-outline {
+        background: transparent;
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+    }
+
+    .btn-custom-outline:hover {
+        background: var(--bg-hover);
+        border-color: var(--text-muted);
+        color: white;
+    }
+
+    .cta-container {
+        padding: 5rem 2rem;
+        text-align: center;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        margin: 4rem 0;
+    }
+
+    /* Animación sutil */
     .fade-up {
         opacity: 0;
-        transform: translateY(2rem);
-        transition: all 0.6s ease-out;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
-
     .fade-up.visible {
         opacity: 1;
         transform: translateY(0);
     }
-
-    /* Botones responsivos */
-    .btn-primary.btn-lg, .btn-outline.btn-lg {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-    }
-
-    @media (min-width: 768px) {
-        .btn-primary.btn-lg, .btn-outline.btn-lg {
-            padding: 0.6rem 1.5rem;
-            font-size: 0.95rem;
-        }
-    }
-
-    @media (min-width: 992px) {
-        .btn-primary.btn-lg, .btn-outline.btn-lg {
-            padding: 0.7rem 1.8rem;
-            font-size: 1rem;
-        }
-    }
-    .btn-outline-pixelfed {
-    background: transparent;
-    border: 1px solid rgba(0, 149, 246, 0.5);
-    color: #0095f6;
-    border-radius: 40px;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.7rem;
-    font-weight: 500;
-    transition: all 0.2s;
-}
-
-.btn-outline-pixelfed:hover {
-    background: #0095f6;
-    color: white;
-}
 </style>
 
-<!-- Hero Section -->
-<section class="container py-3 py-md-5 my-2 my-md-4">
-    <div class="row align-items-center g-4">
-        <!-- Columna izquierda: texto -->
-        <div class="col-lg-6 text-center text-lg-start order-2 order-lg-1 animate__animated animate__fadeInLeft">
-            <h1 class="display-4 fw-bold mb-3 mb-md-4">
-                Potencia tu <span style="color: #0095f6;">Setup</span>
-            </h1>
-            <p class="lead mb-3 mb-md-4 text-secondary">
-                En <strong class="text-white">HardStore MS</strong> encuentras los componentes más potentes del mercado. 
-                GPU, CPU, RAM y más para llevar tu PC al siguiente nivel.
-            </p>
-            <div class="d-flex flex-column flex-sm-row gap-3 mb-4 justify-content-center justify-content-lg-start">
-                <a href="{{ route('productos.index') }}" class="btn btn-primary btn-lg px-4">
-                    Ver Catálogo <i class="bi bi-arrow-right ms-2"></i>
-                </a>
-                <a href="#footer-sucursales" class="btn btn-outline btn-lg px-4">
-                    <i class="bi bi-geo-alt me-2"></i>Ver Sucursales
-                </a>
-            </div>
-
-            <!-- Badges -->
-            <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-truck fs-5 text-primary me-2"></i> 
-                    <span class="small fw-semibold">Envíos a toda Bolivia</span>
-                </div>
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-shield-check fs-5 text-primary me-2"></i> 
-                    <span class="small fw-semibold">Garantía oficial</span>
-                </div>
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-credit-card fs-5 text-primary me-2"></i> 
-                    <span class="small fw-semibold">Hasta 12 cuotas</span>
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <!-- Columna izquierda: texto -->
+            <div class="col-lg-6 text-center text-lg-start">
+                <h1 class="hero-title">
+                    Componentes para tu <br>
+                    <span style="color: var(--primary);">máximo</span> rendimiento.
+                </h1>
+                <p class="hero-subtitle">
+                    En HardStore MS encuentras el hardware definitivo. Sin rodeos, solo potencia para tu setup. Armamos tu PC ideal con asesoría real y garantía oficial.
+                </p>
+                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+                    <a href="{{ route('productos.index') }}" class="btn-custom btn-custom-primary">
+                        Explorar Catálogo <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                    <a href="#footer-sucursales" class="btn-custom btn-custom-outline">
+                        Nuestras Sucursales
+                    </a>
                 </div>
             </div>
-        </div>
-
-        <!-- Columna derecha: imágenes flotantes -->
-        <div class="col-lg-6 mt-3 mt-lg-0 order-1 order-lg-2">
-            <div class="hero-visual">
-                <img src="{{ asset('imagenes/principal/Ramcito.png') }}" 
-                     class="hero-bg-left" 
-                     alt="Memoria RAM">
-                <img src="{{ asset('imagenes/principal/RTX3090.png') }}" 
-                     class="hero-bg-right" 
-                     alt="RTX 3090">
-                <img src="{{ asset('imagenes/principal/PCerda.png') }}" 
-                     class="hero-main animate__animated animate__zoomIn" 
-                     alt="PC Gaming">
+            <!-- Columna derecha: imágenes (las 3 juntas) -->
+            <div class="col-lg-6 mt-3 mt-lg-0">
+                <div class="hero-visual">
+                    <img src="{{ asset('imagenes/principal/Ramcito.png') }}" class="hero-bg-left" alt="RAM">
+                    <img src="{{ asset('imagenes/principal/RTX3090.png') }}" class="hero-bg-right" alt="GPU">
+                    <img src="{{ asset('imagenes/principal/PCerda.png') }}" class="hero-main" alt="PC">
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Sección de características -->
-<section class="container py-3 py-md-5 my-2 my-md-3" id="features">
-    <div class="text-center mb-4 mb-md-5">
-        <h2 class="display-6 fw-bold">¿Por qué elegirnos?</h2>
-        <p class="text-secondary">Experiencia, calidad y confianza en cada componente</p>
+<!-- CARACTERÍSTICAS (Bento Grid) -->
+<section class="container py-5 my-4">
+    <div class="mb-5">
+        <h2 class="fw-bold mb-2" style="color: var(--text-main); font-size: 2rem;">Por qué elegirnos</h2>
+        <p style="color: var(--text-muted);">No somos solo una tienda, somos tu equipo técnico.</p>
     </div>
-
-    <div class="row g-3 g-md-4">
-        <div class="col-md-4 fade-up">
-            <div class="feature-card text-center">
-                <i class="bi bi-cpu feature-icon"></i>
-                <h4 class="text-white mt-2 mt-md-3">Última Tecnología</h4>
-                <p class="text-secondary small">RTX 40 Series, Ryzen 7000, DDR5. Stock actualizado semanalmente.</p>
-            </div>
+    
+    <div class="bento-grid fade-up">
+        <div class="bento-item">
+            <i class="bi bi-cpu bento-icon"></i>
+            <h3 class="bento-title">Última Tecnología</h3>
+            <p class="bento-text">RTX 40 Series, procesadores Ryzen 7000 y memorias DDR5. Stock actualizado cada semana para entusiastas.</p>
         </div>
-        <div class="col-md-4 fade-up">
-            <div class="feature-card text-center">
-                <i class="bi bi-person-check feature-icon"></i>
-                <h4 class="text-white mt-2 mt-md-3">Asesoría Experta</h4>
-                <p class="text-secondary small">Te guiamos para armar el PC perfecto según tu presupuesto.</p>
-            </div>
+        <div class="bento-item">
+            <i class="bi bi-person-check bento-icon"></i>
+            <h3 class="bento-title">Asesoría Real</h3>
+            <p class="bento-text">No te vendemos por vender. Te ayudamos a elegir los componentes exactos que necesitas según tu presupuesto.</p>
         </div>
-        <div class="col-md-4 fade-up">
-            <div class="feature-card text-center">
-                <i class="bi bi-graph-up feature-icon"></i>
-                <h4 class="text-white mt-2 mt-md-3">Precios Competitivos</h4>
-                <p class="text-secondary small">El mejor equilibrio entre calidad y precio del mercado.</p>
-            </div>
+        <div class="bento-item">
+            <i class="bi bi-shield-check bento-icon"></i>
+            <h3 class="bento-title">Garantía Oficial</h3>
+            <p class="bento-text">Todos nuestros productos cuentan con garantía directa del fabricante. Tu inversión está segura.</p>
         </div>
     </div>
 </section>
-<!-- ============================================ -->
-<!-- SECCIÓN DE COMBOS RECOMENDADOS               -->
-<!-- ============================================ -->
-<section class="container py-3 py-md-5 my-2 my-md-3" id="combos">
-    <div class="text-center mb-4 mb-md-5">
-        <h2 class="display-6 fw-bold">🔥 Combos Recomendados</h2>
-        <p class="text-secondary">Equipos compatibles listos para armar tu PC</p>
+
+<!-- COMBOS (Si hay datos) -->
+@if(isset($combos) && count($combos) > 0)
+<section class="container py-5 my-4">
+    <div class="mb-5">
+        <h2 class="fw-bold mb-2" style="color: var(--text-main); font-size: 2rem;">Combos Recomendados</h2>
+        <p style="color: var(--text-muted);">Componentes que ya sabemos que funcionan juntos.</p>
     </div>
 
-    @if(isset($combos) && count($combos) > 0)
-        <div class="row g-3 g-md-4">
-            @foreach($combos as $index => $combo)
-                <div class="col-md-4 col-lg-3 fade-up">
-                    <div class="feature-card text-center p-3 p-md-4" style="border-color: rgba(40, 167, 69, 0.3);">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge bg-primary bg-opacity-25 text-primary">Combo {{ $index + 1 }}</span>
-                            <span class="badge bg-success bg-opacity-25 text-success">
-                                <i class="bi bi-check-circle"></i> Disponible
-                            </span>
-                        </div>
-                        <div class="text-start">
-                            <div class="d-flex align-items-center gap-2 mb-1">
-                                <i class="bi bi-cpu text-primary"></i>
-                                <strong class="text-white small">{{ $combo['cpu']->name }}</strong>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 mb-1">
-                                <i class="bi bi-motherboard text-primary"></i>
-                                <span class="text-secondary small">{{ $combo['placa']->name }}</span>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="bi bi-memory text-primary"></i>
-                                <span class="text-secondary small">{{ $combo['ram']->name }}</span>
-                            </div>
-                        </div>
-                        <div class="mt-3 d-flex justify-content-between align-items-center">
-                            <span class="fw-bold" style="color: #0095f6;">
-                                ${{ number_format($combo['cpu']->precio_venta + $combo['placa']->precio_venta + $combo['ram']->precio_venta, 0, ',', '.') }}
-                            </span>
-                            @if(isset($combo['cpu']->id) && $combo['cpu']->id > 0)
-                                <a href="{{ route('productos.index', ['combo' => $combo['cpu']->id]) }}" class="btn btn-sm btn-outline-pixelfed">
-                                    Ver combo completo
-                                </a>
-                            @endif
-                        </div>
+    <div class="row g-4">
+        @foreach($combos as $index => $combo)
+            <div class="col-md-6 col-lg-4 fade-up">
+                <div class="p-4" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 1rem;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: var(--primary);">Combo {{ $index + 1 }}</span>
+                    </div>
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-2 d-flex align-items-center gap-2" style="color: var(--text-main); font-size: 0.9rem;">
+                            <i class="bi bi-cpu" style="color: var(--primary);"></i> {{ $combo['cpu']->name }}
+                        </li>
+                        <li class="mb-2 d-flex align-items-center gap-2" style="color: var(--text-main); font-size: 0.9rem;">
+                            <i class="bi bi-motherboard" style="color: var(--primary);"></i> {{ $combo['placa']->name }}
+                        </li>
+                        <li class="d-flex align-items-center gap-2" style="color: var(--text-main); font-size: 0.9rem;">
+                            <i class="bi bi-memory" style="color: var(--primary);"></i> {{ $combo['ram']->name }}
+                        </li>
+                    </ul>
+                    <div class="d-flex justify-content-between align-items-center border-top pt-3" style="border-color: var(--border-color) !important;">
+                        <span class="fw-bold" style="color: var(--text-main); font-size: 1.1rem;">
+                            ${{ number_format($combo['cpu']->precio_venta + $combo['placa']->precio_venta + $combo['ram']->precio_venta, 0, ',', '.') }}
+                        </span>
+                        <a href="{{ route('productos.index', ['combo' => $combo['cpu']->id]) }}" class="btn-custom btn-custom-outline py-1 px-3" style="font-size: 0.8rem;">
+                            Ver
+                        </a>
                     </div>
                 </div>
-            @endforeach
-        </div>
-    @else
-        <div class="text-center py-4">
-            <i class="bi bi-boxes fs-1 text-muted"></i>
-            <p class="text-muted mt-2">No hay combos disponibles en este momento.</p>
-        </div>
-    @endif
+            </div>
+        @endforeach
+    </div>
 </section>
+@endif
 
-<!-- Estadísticas -->
-<section class="container py-3 py-md-4">
-    <div class="row g-3 g-md-4">
-        <div class="col-6 col-md-3 fade-up">
-            <div class="stat-card">
-                <div class="stat-number">5k+</div>
-                <div class="small text-secondary">Clientes felices</div>
-            </div>
+<!-- ESTADÍSTICAS (Sin cajas) -->
+<section class="container">
+    <div class="stats-container fade-up">
+        <div class="stat-item">
+            <div class="stat-value">5k+</div>
+            <div class="stat-label">Clientes Felices</div>
         </div>
-        <div class="col-6 col-md-3 fade-up">
-            <div class="stat-card">
-                <div class="stat-number">1200+</div>
-                <div class="small text-secondary">Productos vendidos</div>
-            </div>
+        <div class="stat-item">
+            <div class="stat-value">1200+</div>
+            <div class="stat-label">Equipos Armados</div>
         </div>
-        <div class="col-6 col-md-3 fade-up">
-            <div class="stat-card">
-                <div class="stat-number">4.9★</div>
-                <div class="small text-secondary">Calificación</div>
-            </div>
+        <div class="stat-item">
+            <div class="stat-value">4.9★</div>
+            <div class="stat-label">Calificación Promedio</div>
         </div>
-        <div class="col-6 col-md-3 fade-up">
-            <div class="stat-card">
-                <div class="stat-number">24/7</div>
-                <div class="small text-secondary">Soporte online</div>
-            </div>
+        <div class="stat-item">
+            <div class="stat-value">24/7</div>
+            <div class="stat-label">Soporte Online</div>
         </div>
     </div>
 </section>
 
-<!-- Call to Action -->
-<section class="container my-4 my-md-5">
-    <div class="cta-section fade-up">
-        <h3 class="fw-bold mb-2 mb-md-3">¿Listo para armar tu PC ideal?</h3>
-        <p class="text-secondary mb-3 mb-md-4">Regístrate y accede a ofertas exclusivas + envíos prioritarios</p>
+<!-- CTA FINAL -->
+<section class="container">
+    <div class="cta-container fade-up">
+        <h2 class="fw-bold mb-3" style="color: var(--text-main); font-size: 2.2rem;">¿Listo para armar tu PC ideal?</h2>
+        <p class="mb-4" style="color: var(--text-muted); font-size: 1.1rem;">Regístrate y accede a ofertas exclusivas, envíos prioritarios y nuestro asistente virtual.</p>
         @guest
-            <a href="{{ route('register') }}" class="btn-cta">Crear cuenta gratis <i class="bi bi-arrow-right ms-2"></i></a>
+            <a href="{{ route('register') }}" class="btn-custom btn-custom-primary">Crear cuenta gratis</a>
         @else
-            <a href="{{ route('productos.index') }}" class="btn-cta">Explorar productos <i class="bi bi-arrow-right ms-2"></i></a>
+            <a href="{{ route('productos.index') }}" class="btn-custom btn-custom-primary">Explorar productos</a>
         @endguest
     </div>
 </section>

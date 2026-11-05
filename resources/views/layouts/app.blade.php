@@ -6,23 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>HardStore MS | Tienda de Hardware</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
     :root {
-        /* Nueva paleta profesional 2026 (Dark-First Neutral) */
-        --bg-base: #09090b;       /* Fondo principal casi negro */
-        --bg-surface: #121215;    /* Fondo de tarjetas y navbar */
-        --bg-hover: #18181b;      /* Hover de tarjetas */
-        --border-color: #27272a;  /* Bordes sutiles */
-        
-        --text-main: #f4f4f5;     /* Blanco suave */
-        --text-muted: #a1a1aa;    /* Gris para textos secundarios */
-        --primary: #0095f6;       /* Azul principal (solo para acentos) */
-    }
+    --text-xs: 0.64rem;
+    --text-sm: 0.8rem;
+    --text-base: 1rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.563rem;
+    --text-2xl: 1.953rem;
+    --text-3xl: 2.441rem;
+    --text-4xl: 3.052rem;
+    
+    --bg-base: #0a0a0c;     
+    --bg-surface: #121215;
+    --bg-hover: #18181b;   
+    --border-color: #27272a;
+    
+    --text-main: #f4f4f5;     
+    --text-muted: #a1a1aa;
+    
+    --primary: #6366f1;        
+}
 
     * {
         margin: 0;
@@ -31,7 +39,7 @@
     }
 
     body { 
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
         background-color: var(--bg-base);
         color: var(--text-main);
         min-height: 100vh;
@@ -110,7 +118,6 @@
         font-size: 0.9rem;
     }
 
-    /* Botones */
     .btn-primary {
         background: var(--primary);
         border: none;
@@ -123,7 +130,7 @@
     }
 
     .btn-primary:hover {
-        background: #0077cc;
+        background: #4f46e5;
         color: white;
     }
 
@@ -218,7 +225,7 @@
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
                 <div class="brand-icon">H</div>
-                HardStore<span style="color: #0095f6;">MS</span>
+                HardStore<span style="color: var(--primary);">MS</span>
             </a>
 
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
@@ -295,7 +302,7 @@
                 <div class="col-12 col-lg-4 text-center text-lg-start">
                     <div class="d-flex align-items-center justify-content-center justify-content-lg-start mb-3">
                         <div class="brand-icon" style="width: 2.5rem; height: 2.5rem;">H</div>
-                        <span class="fw-bold fs-4">HardStore<span style="color: #0095f6;">MS</span></span>
+                        <span class="fw-bold fs-4">HardStore<span style="color: var(--primary);">MS</span></span>
                     </div>
                     <p class="text-secondary small">Líderes en hardware de alto rendimiento. Más de 5,000 clientes confían en nosotros.</p>
                     <div class="mt-3 d-flex justify-content-center justify-content-lg-start gap-3">
@@ -347,7 +354,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pt-4 mt-4 border-top border-secondary border-opacity-25 text-center">
+            <div class="pt-4 mt-4 border-top text-center" style="border-color: var(--border-color) !important;">
                 <p class="text-secondary small mb-0">&copy; {{ date('Y') }} HardStore MS. Todos los derechos reservados.</p>
             </div>
         </div>
