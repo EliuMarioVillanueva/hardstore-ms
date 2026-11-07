@@ -351,7 +351,6 @@
         </div>
     </div>
 
-    <!-- Ranking Vendedores y Clientes -->
     <div class="row g-4 mb-4">
         <div class="col-md-6">
             <div class="px-card p-4 h-100">

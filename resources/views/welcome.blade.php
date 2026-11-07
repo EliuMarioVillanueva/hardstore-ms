@@ -3,7 +3,7 @@
 @section('content')
 <style>
     /* ============================================ */
-    /* HERO SECTION (Original)                      */
+    /* HERO SECTION                                 */
     /* ============================================ */
     .hero-section {
         padding: 4rem 0;
@@ -40,7 +40,8 @@
         z-index: 1;
         filter: blur(3px);
         pointer-events: none;
-        animation: floatLeft 6s ease-in-out infinite;
+        /* Emil Kowalski: Animación más sutil, respetando accesibilidad */
+        animation: floatLeft 8s ease-in-out infinite;
     }
 
     .hero-bg-right {
@@ -53,20 +54,20 @@
         z-index: 1;
         filter: blur(3px);
         pointer-events: none;
-        animation: floatRight 7s ease-in-out infinite;
+        animation: floatRight 9s ease-in-out infinite;
     }
 
     @keyframes floatLeft {
         0%, 100% { transform: translateY(-50%) rotate(-3deg); }
-        50% { transform: translateY(-55%) rotate(-5deg); }
+        50% { transform: translateY(-53%) rotate(-5deg); }
     }
 
     @keyframes floatRight {
         0%, 100% { transform: translateY(-50%) rotate(3deg); }
-        50% { transform: translateY(-45%) rotate(5deg); }
+        50% { transform: translateY(-47%) rotate(5deg); }
     }
 
-    /* Breakpoints para las imágenes (los originales) */
+    /* Breakpoints para las imágenes */
     @media (min-width: 576px) {
         .hero-main { max-width: 380px; }
         .hero-bg-left { width: 160px; left: -20px; }
@@ -81,8 +82,8 @@
     }
     @media (min-width: 992px) {
         .hero-main { max-width: 480px; }
-        .hero-bg-left { width: 250px; left: -40px; opacity: 0.35; filter: blur(3px); }
-        .hero-bg-right { width: 230px; right: -40px; opacity: 0.35; filter: blur(3px); }
+        .hero-bg-left { width: 250px; left: -40px; opacity: 0.35; }
+        .hero-bg-right { width: 230px; right: -40px; opacity: 0.35; }
         .hero-visual { min-height: 55vh; }
     }
     @media (min-width: 1200px) {
@@ -97,8 +98,9 @@
         .hero-bg-right { width: 90px; right: -5px; opacity: 0.3; filter: blur(2px); }
         .hero-visual { min-height: 35vh; }
     }
-        /* ============================================ */
-    /* ESTILOS DEL TEXTO Y BOTONES DEL HERO         */
+
+    /* ============================================ */
+    /* TEXTOS Y BOTONES (Taste Skill)               */
     /* ============================================ */
     .hero-title {
         font-size: clamp(2.5rem, 6vw, 4.5rem);
@@ -114,7 +116,6 @@
         color: var(--text-muted);
         max-width: 500px;
         margin-bottom: 2.5rem;
-        /* En móvil centramos el subtítulo */
         margin-left: auto;
         margin-right: auto;
     }
@@ -126,7 +127,7 @@
         }
     }
 
-    /* Botones */
+    /* Botones (Única definición) */
     .btn-custom {
         display: inline-flex;
         align-items: center;
@@ -135,6 +136,12 @@
         border-radius: 8px;
         text-decoration: none;
         transition: all 0.2s;
+        /* Accessibility: Focus visible */
+        outline: none;
+    }
+    
+    .btn-custom:focus-visible {
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5);
     }
 
     .btn-custom-primary {
@@ -160,7 +167,7 @@
     }
 
     /* ============================================ */
-    /* BENTO GRID (Para las características)        */
+    /* BENTO GRID (Taste Skill)                     */
     /* ============================================ */
     .bento-grid {
         display: grid;
@@ -259,40 +266,8 @@
     }
 
     /* ============================================ */
-    /* BOTONES Y CTA                                */
+    /* CTA FINAL                                    */
     /* ============================================ */
-    .btn-custom {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.8rem 1.8rem;
-        font-weight: 600;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-
-    .btn-custom-primary {
-        background: var(--primary);
-        color: white;
-    }
-
-    .btn-custom-primary:hover {
-        background: #4f46e5;
-        color: white;
-    }
-
-    .btn-custom-outline {
-        background: transparent;
-        border: 1px solid var(--border-color);
-        color: var(--text-main);
-    }
-
-    .btn-custom-outline:hover {
-        background: var(--bg-hover);
-        border-color: var(--text-muted);
-        color: white;
-    }
-
     .cta-container {
         padding: 5rem 2rem;
         text-align: center;
@@ -302,15 +277,119 @@
         margin: 4rem 0;
     }
 
-    /* Animación sutil */
-    .fade-up {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    /* ============================================ */
+    /* SCROLL-DRIVEN ANIMATIONS (Nativo)            */
+    /* ============================================ */
+    @supports (animation-timeline: view()) {
+        .bento-item,
+        .combo-card,
+        .stat-item {
+            animation: revealOnScroll linear both;
+            animation-timeline: view();
+            animation-range: entry 0% cover 25%;
+        }
+
+        @keyframes revealOnScroll {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     }
-    .fade-up.visible {
-        opacity: 1;
-        transform: translateY(0);
+
+    /* Accessibility: Respetar preferencias de movimiento reducido */
+    @media (prefers-reduced-motion: reduce) {
+        .hero-bg-left,
+        .hero-bg-right,
+        .bento-item,
+        .combo-card,
+        .stat-item {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
+    /* ===== Riel de Combos (Scroll-Snap) ===== */
+    .combos-rail-wrapper {
+        position: relative;
+    }
+
+    .combos-rail {
+        display: flex;
+        gap: 1.25rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        padding: 0.5rem 0 1rem;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .combos-rail::-webkit-scrollbar {
+        display: none;
+    }
+
+    .combo-slide {
+        flex: 0 0 auto;
+        width: 85%;
+        scroll-snap-align: start;
+    }
+
+    .combo-card {
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        height: 100%;
+        transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .combo-card:hover {
+        border-color: var(--primary);
+        transform: translateY(-4px);
+    }
+
+    @media (min-width: 768px) {
+        .combo-slide { width: calc(50% - 0.625rem); }
+    }
+
+    @media (min-width: 992px) {
+        .combo-slide { width: calc(33.333% - 0.834rem); }
+    }
+
+    .rail-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        color: var(--text-main);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .rail-btn:hover {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: white;
+    }
+
+    .rail-btn:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+    
+    .rail-btn:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
     }
 </style>
 
@@ -318,7 +397,6 @@
 <section class="hero-section">
     <div class="container">
         <div class="row align-items-center g-4">
-            <!-- Columna izquierda: texto -->
             <div class="col-lg-6 text-center text-lg-start">
                 <h1 class="hero-title">
                     Componentes para tu <br>
@@ -336,26 +414,25 @@
                     </a>
                 </div>
             </div>
-            <!-- Columna derecha: imágenes (las 3 juntas) -->
             <div class="col-lg-6 mt-3 mt-lg-0">
                 <div class="hero-visual">
-                    <img src="{{ asset('imagenes/principal/Ramcito.png') }}" class="hero-bg-left" alt="RAM">
-                    <img src="{{ asset('imagenes/principal/RTX3090.png') }}" class="hero-bg-right" alt="GPU">
-                    <img src="{{ asset('imagenes/principal/PCerda.png') }}" class="hero-main" alt="PC">
+                    <img src="{{ asset('imagenes/principal/Ramcito.png') }}" class="hero-bg-left" alt="Memoria RAM Corsair">
+                    <img src="{{ asset('imagenes/principal/RTX3090.png') }}" class="hero-bg-right" alt="Tarjeta Gráfica RTX 3090">
+                    <img src="{{ asset('imagenes/principal/PCerda.png') }}" class="hero-main" alt="PC Gamer Armada en HardStore MS">
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CARACTERÍSTICAS (Bento Grid) -->
+<!-- CARACTERÍSTICAS -->
 <section class="container py-5 my-4">
     <div class="mb-5">
         <h2 class="fw-bold mb-2" style="color: var(--text-main); font-size: 2rem;">Por qué elegirnos</h2>
         <p style="color: var(--text-muted);">No somos solo una tienda, somos tu equipo técnico.</p>
     </div>
     
-    <div class="bento-grid fade-up">
+    <div class="bento-grid">
         <div class="bento-item">
             <i class="bi bi-cpu bento-icon"></i>
             <h3 class="bento-title">Última Tecnología</h3>
@@ -374,50 +451,104 @@
     </div>
 </section>
 
-<!-- COMBOS (Si hay datos) -->
+<!-- COMBOS (Riel Horizontal) -->
 @if(isset($combos) && count($combos) > 0)
 <section class="container py-5 my-4">
-    <div class="mb-5">
-        <h2 class="fw-bold mb-2" style="color: var(--text-main); font-size: 2rem;">Combos Recomendados</h2>
-        <p style="color: var(--text-muted);">Componentes que ya sabemos que funcionan juntos.</p>
+    <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+            <h2 class="fw-bold mb-2" style="color: var(--text-main); font-size: 2rem;">Combos Recomendados</h2>
+            <p class="mb-0" style="color: var(--text-muted);">Componentes que ya sabemos que funcionan juntos.</p>
+        </div>
+        <div class="d-none d-md-flex gap-2">
+            <button class="rail-btn" id="combosPrev" aria-label="Ver combos anteriores">
+                <i class="bi bi-arrow-left"></i>
+            </button>
+            <button class="rail-btn" id="combosNext" aria-label="Ver siguientes combos">
+                <i class="bi bi-arrow-right"></i>
+            </button>
+        </div>
     </div>
 
-    <div class="row g-4">
-        @foreach($combos as $index => $combo)
-            <div class="col-md-6 col-lg-4 fade-up">
-                <div class="p-4" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 1rem;">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: var(--primary);">Combo {{ $index + 1 }}</span>
-                    </div>
-                    <ul class="list-unstyled mb-4">
-                        <li class="mb-2 d-flex align-items-center gap-2" style="color: var(--text-main); font-size: 0.9rem;">
-                            <i class="bi bi-cpu" style="color: var(--primary);"></i> {{ $combo['cpu']->name }}
-                        </li>
-                        <li class="mb-2 d-flex align-items-center gap-2" style="color: var(--text-main); font-size: 0.9rem;">
-                            <i class="bi bi-motherboard" style="color: var(--primary);"></i> {{ $combo['placa']->name }}
-                        </li>
-                        <li class="d-flex align-items-center gap-2" style="color: var(--text-main); font-size: 0.9rem;">
-                            <i class="bi bi-memory" style="color: var(--primary);"></i> {{ $combo['ram']->name }}
-                        </li>
-                    </ul>
-                    <div class="d-flex justify-content-between align-items-center border-top pt-3" style="border-color: var(--border-color) !important;">
-                        <span class="fw-bold" style="color: var(--text-main); font-size: 1.1rem;">
-                            ${{ number_format($combo['cpu']->precio_venta + $combo['placa']->precio_venta + $combo['ram']->precio_venta, 0, ',', '.') }}
-                        </span>
-                        <a href="{{ route('productos.index', ['combo' => $combo['cpu']->id]) }}" class="btn-custom btn-custom-outline py-1 px-3" style="font-size: 0.8rem;">
-                            Ver
-                        </a>
+    <div class="combos-rail-wrapper">
+        <div class="combos-rail" id="combosRail" role="region" aria-label="Carrusel de combos recomendados">
+            @foreach($combos as $index => $combo)
+                <div class="combo-slide">
+                    <div class="combo-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: var(--primary); font-weight: 600;">
+                                Combo {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
+                            </span>
+                            <i class="bi bi-stars" style="color: var(--text-muted); font-size: 0.9rem;"></i>
+                        </div>
+                        
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2 d-flex align-items-start gap-2" style="color: var(--text-main); font-size: 0.9rem;">
+                                <i class="bi bi-cpu mt-1" style="color: var(--primary);"></i>
+                                <span>{{ $combo['cpu']->name }}</span>
+                            </li>
+                            <li class="mb-2 d-flex align-items-start gap-2" style="color: var(--text-main); font-size: 0.9rem;">
+                                <i class="bi bi-motherboard mt-1" style="color: var(--primary);"></i>
+                                <span>{{ $combo['placa']->name }}</span>
+                            </li>
+                            <li class="d-flex align-items-start gap-2" style="color: var(--text-main); font-size: 0.9rem;">
+                                <i class="bi bi-memory mt-1" style="color: var(--primary);"></i>
+                                <span>{{ $combo['ram']->name }}</span>
+                            </li>
+                        </ul>
+
+                        <div class="d-flex justify-content-between align-items-center border-top pt-3" style="border-color: var(--border-color) !important;">
+                            <div>
+                                <div class="small" style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase;">Total</div>
+                                <div class="fw-bold" style="color: var(--text-main); font-size: 1.1rem;">
+                                    ${{ number_format($combo['cpu']->precio_venta + $combo['placa']->precio_venta + $combo['ram']->precio_venta, 0, ',', '.') }}
+                                </div>
+                            </div>
+                            <a href="{{ route('productos.index', ['combo' => $combo['cpu']->id]) }}" class="btn-custom btn-custom-outline py-2 px-3" style="font-size: 0.8rem;">
+                                Ver combo
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rail = document.getElementById('combosRail');
+        const prevBtn = document.getElementById('combosPrev');
+        const nextBtn = document.getElementById('combosNext');
+
+        if (!rail || !prevBtn || !nextBtn) return;
+
+        const getScrollAmount = () => {
+            const card = rail.querySelector('.combo-slide');
+            return card ? card.offsetWidth + 20 : 320;
+        };
+
+        const updateButtons = () => {
+            prevBtn.disabled = rail.scrollLeft <= 5;
+            nextBtn.disabled = rail.scrollLeft >= (rail.scrollWidth - rail.clientWidth - 5);
+        };
+
+        prevBtn.addEventListener('click', () => {
+            rail.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            rail.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        });
+
+        rail.addEventListener('scroll', updateButtons);
+        updateButtons();
+    });
+</script>
 @endif
 
-<!-- ESTADÍSTICAS (Sin cajas) -->
+<!-- ESTADÍSTICAS -->
 <section class="container">
-    <div class="stats-container fade-up">
+    <div class="stats-container">
         <div class="stat-item">
             <div class="stat-value">5k+</div>
             <div class="stat-label">Clientes Felices</div>
@@ -439,7 +570,7 @@
 
 <!-- CTA FINAL -->
 <section class="container">
-    <div class="cta-container fade-up">
+    <div class="cta-container">
         <h2 class="fw-bold mb-3" style="color: var(--text-main); font-size: 2.2rem;">¿Listo para armar tu PC ideal?</h2>
         <p class="mb-4" style="color: var(--text-muted); font-size: 1.1rem;">Regístrate y accede a ofertas exclusivas, envíos prioritarios y nuestro asistente virtual.</p>
         @guest
@@ -449,16 +580,4 @@
         @endguest
     </div>
 </section>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const fadeElements = document.querySelectorAll('.fade-up');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.15 });
-        fadeElements.forEach(el => observer.observe(el));
-    });
-</script>
 @endsection
