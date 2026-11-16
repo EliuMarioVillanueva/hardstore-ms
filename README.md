@@ -62,16 +62,18 @@ HardStore MS integra un asistente virtual local para evitar depender de APIs de 
 
 ## 📸 Capturas de Pantalla
 
-*(Reemplaza estos enlaces con las imágenes reales de tu proyecto subidas a GitHub)*
-
 ### Página Principal y Catálogo
-*(Aquí va la imagen de tu catálogo)*
+<img width="1875" height="938" alt="Captura desde 2026-11-15 23-43-55" src="https://github.com/user-attachments/assets/c9667d66-180d-46e0-a774-ee7ac4e1db2c" />
+
+
 
 ### Asistente Virtual (HardBot)
-*(Aquí va la imagen del chat del asistente)*
+<img width="1827" height="948" alt="HOME" src="https://github.com/user-attachments/assets/fd54b0f7-f5fe-4f85-a31e-302602c19a98" />
+
 
 ### Dashboard del Administrador
-*(Aquí va la imagen del dashboard con gráficos)*
+<img width="1920" height="1080" alt="Captura desde 2026-11-07 18-22-02" src="https://github.com/user-attachments/assets/60653974-bd69-4fb7-a8c5-58b47bff760d" />
+
 
 ---
 
